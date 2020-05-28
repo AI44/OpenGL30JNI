@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ideacarry.opengl30jni">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ideacarry.example1.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example2.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example3.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example4.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example5.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example6.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example7.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example8.DemoActivity"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name="com.ideacarry.example9.DemoActivity"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name="com.ideacarry.example10.DemoActivity"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name="com.ideacarry.example11.DemoActivity"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name="com.ideacarry.example12.DemoActivity"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example13.DemoActivity"
+            android:screenOrientation="behind" />
+    </application>
+
+</manifest>
