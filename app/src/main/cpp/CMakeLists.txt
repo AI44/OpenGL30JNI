@@ -66,6 +66,12 @@ aux_source_directory(./example11 example11)
 include_directories(./example13)
 aux_source_directory(./example13 example13)
 
+include_directories(./example14)
+aux_source_directory(./example14 example14)
+
+include_directories(./example15)
+aux_source_directory(./example15 example15)
+
 add_library(
         native-lib
 
@@ -87,6 +93,8 @@ add_library(
         ${example10}
         ${example11}
         ${example13}
+        ${example14}
+        ${example15}
         native-lib.cpp)
 
 find_library(

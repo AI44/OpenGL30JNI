@@ -85,8 +85,7 @@ public class GLThread extends HandlerThread {
     public synchronized void start() {
         super.start();
 
-        mHandler = new Handler(getLooper());
-        mHandler.post(() -> {
+        getHandler().post(() -> {
             createGL();
         });
     }
@@ -98,8 +97,15 @@ public class GLThread extends HandlerThread {
         });
     }
 
+    public Handler getHandler() {
+        if (mHandler == null) {
+            mHandler = new Handler(getLooper());
+        }
+        return mHandler;
+    }
+
     public void glCreate(final Surface surface) {
-        mHandler.post(()->{
+        mHandler.post(() -> {
             if (eglSurface != null) {
                 EGL14.eglDestroySurface(eglDisplay, eglSurface);
                 eglSurface = null;

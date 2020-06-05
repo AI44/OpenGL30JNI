@@ -46,19 +46,37 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemHolder> {
         return 0;
     }
 
+    private int colorIndex = -1;
+
+    private int getColor() {
+        final int[] colorArr = new int[]{
+                0xffffe4e1,
+                0xfff5fffa,
+                0xfff0e68c,
+                0xffdcdcdc,
+                0xffffc0cb,
+                0xff90ee90,
+                0xffb0e0e6};
+        int index;
+        do {
+            index = (int) (Math.random() * colorArr.length);
+        }
+        while (index == colorIndex);
+        colorIndex = index;
+        return colorArr[index];
+    }
+
     class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
 
-            final int[] colorArr = new int[]{0xffffe4e1, 0xfff5fffa, 0xfff0e68c, 0xffdcdcdc, 0xffffc0cb};
-
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-            int padding = DensityUtils.dip2px(itemView.getContext(), 11);
+            int padding = DensityUtils.dip2px(itemView.getContext(), 12);
             TextView tex = (TextView) itemView;
             tex.setPadding(0, padding, 0, padding);
-            tex.setTextSize(30);
-            tex.setBackgroundColor(colorArr[(int) (Math.random() * colorArr.length)]);
+            tex.setTextSize(20);
+            tex.setBackgroundColor(getColor());
             tex.setLayoutParams(lp);
             tex.setOnClickListener(this);
         }

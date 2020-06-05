@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("11.freetype加载文字", com.ideacarry.example11.DemoActivity.class));
         LIST_DATA.add(new ItemData("12.自建gl环境 + surfaceView", com.ideacarry.example12.DemoActivity.class));
         LIST_DATA.add(new ItemData("13.渲染yuv数据", com.ideacarry.example13.DemoActivity.class));
+        LIST_DATA.add(new ItemData("14.CameraX+SurfaceTexture+SurfaceView", com.ideacarry.example14.DemoActivity.class));
+        LIST_DATA.add(new ItemData("15.framebuffer", com.ideacarry.example15.DemoActivity.class));
+        Collections.reverse(LIST_DATA);
     }
 
     @Override

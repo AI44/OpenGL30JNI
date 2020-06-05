@@ -1,6 +1,8 @@
 //
 // Created by Raining on 2019/8/9.
 // #I# uniform
+// 查询uniform地址不要求你之前使用过着色器程序，但是更新一个uniform之前你必须先使用程序（调用glUseProgram)，
+// 因为它是在当前激活的着色器程序中设置uniform的。
 //
 
 #include <GLES3/gl3.h>

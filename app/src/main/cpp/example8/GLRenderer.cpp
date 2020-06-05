@@ -192,16 +192,14 @@ Java_com_ideacarry_example8_GLRenderer_drawFrame(JNIEnv *env, jobject thiz) {
         gettimeofday(&tv, nullptr);
         float tme = tv.tv_sec - tv.tv_sec / 10000 * 10000 + tv.tv_usec / 1000000.0f;
 
-        float deltaTime = tme - lastTime;
-        lastTime = tme;
-
+        //fixme 计算错误
         glm::mat4 view = glm::mat4(1.0f);
         switch (sDirection) {
             case 1:
             case 2:
             case 3:
             case 4: {
-                float cameraSpeed = 2.5f * deltaTime;
+                float cameraSpeed = 2.5f * 0.5f;
 
                 switch (sDirection) {
                     case 1://左
