@@ -30,8 +30,11 @@ import java.nio.FloatBuffer;
 public class GlUtil {
     public static final String TAG = "Grafika";
 
-    /** Identity matrix for general use.  Don't modify or life will get weird. */
+    /**
+     * Identity matrix for general use.  Don't modify or life will get weird.
+     */
     public static final float[] IDENTITY_MATRIX;
+
     static {
         IDENTITY_MATRIX = new float[16];
         Matrix.setIdentityM(IDENTITY_MATRIX, 0);
@@ -40,7 +43,8 @@ public class GlUtil {
     private static final int SIZEOF_FLOAT = 4;
 
 
-    private GlUtil() {}     // do not instantiate
+    private GlUtil() {
+    }     // do not instantiate
 
     /**
      * Creates a new program from the supplied vertex and fragment shaders.
@@ -126,8 +130,8 @@ public class GlUtil {
     /**
      * Creates a texture from raw data.
      *
-     * @param data Image data, in a "direct" ByteBuffer.
-     * @param width Texture width, in pixels (not bytes).
+     * @param data   Image data, in a "direct" ByteBuffer.
+     * @param width  Texture width, in pixels (not bytes).
      * @param height Texture height, in pixels.
      * @param format Image data format (use constant appropriate for glTexImage2D(), e.g. GL_RGBA).
      * @return Handle to texture.
@@ -151,6 +155,7 @@ public class GlUtil {
                 GLES30.GL_LINEAR);
         GlUtil.checkGlError("loadImageTexture");
 
+        GLES30.glPixelStorei(GLES30.GL_UNPACK_ALIGNMENT, 1);//1字节对齐
         // Load the data from the buffer into the texture handle.
         GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, /*level*/ 0, format,
                 width, height, /*border*/ 0, format, GLES30.GL_UNSIGNED_BYTE, data);

@@ -1,6 +1,7 @@
 package com.ideacarry.example14;
 
 import android.graphics.Point;
+import android.util.Size;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
@@ -46,6 +47,14 @@ public class PreviewUtils {
             default:
                 throw new UnsupportedOperationException(
                         "Unsupported surface rotation constant: " + rotationConstant);
+        }
+    }
+
+    public static Size getPreviewSize(@NonNull final View view, @NonNull Size cameraSize) {
+        if (isNaturalPortrait(view)) {
+            return new Size(cameraSize.getHeight(), cameraSize.getWidth());
+        } else {
+            return new Size(cameraSize.getWidth(), cameraSize.getHeight());
         }
     }
 }

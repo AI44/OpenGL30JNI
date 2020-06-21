@@ -17,3 +17,23 @@ glViewport(int x, int y, int width, int height)
 ```
 
 ![viewport](viewport.png)
+
+[旋转](http://neevek.net/posts/2017/11/26/opengl-rotating-mapped-texture-in-a-rectangular-viewport.html)
+---
+
+![rotated](rotated.jpg)
+
+```oclight
+float aspect_ratio = viewport_height / viewport_width;
+glm::mat4 transform;
+transform = glm::rotate(transform, glm::radians(45), glm::vec3(0.0f, 0.0f, 1.0f));
+transform = glm::scale(transform, glm::vec3(1.0f, aspect_ratio, 1.0f));
+glm::mat4 ortho_proj = glm::ortho(
+    -1.0f,              // left
+    1.0f,               // right
+    -aspect_ratio,      // bottom
+    aspect_ratio,       // top
+    0.1f,               // near plane
+    0.0f                // far plane
+    ) * transform;    
+```

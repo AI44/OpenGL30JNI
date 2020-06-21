@@ -107,6 +107,7 @@ namespace example15 {
         img.SetImage(env, bmp);
         if (bmp) {
             glBindTexture(GL_TEXTURE_2D, textureID);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_width, img.m_height, 0, GL_RGBA,
                          GL_UNSIGNED_BYTE, img.m_pDatas);
             glGenerateMipmap(GL_TEXTURE_2D);
@@ -253,6 +254,7 @@ Java_com_ideacarry_example15_GLRenderer_surfaceChanged(JNIEnv *env, jobject thiz
     // create a color attachment texture
     glGenTextures(1, &textureColorBuffer);
     glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 3);//3字节对齐
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sWidth, sHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

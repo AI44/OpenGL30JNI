@@ -22,7 +22,7 @@ public class GLThread extends HandlerThread implements Executor, SurfaceHolder.C
 
     public GLThread(Context context) {
         super("glThread");
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
 
     public Handler getHandler() {
@@ -79,7 +79,6 @@ public class GLThread extends HandlerThread implements Executor, SurfaceHolder.C
         if (!mIsDestroy) {
             mHandler.post(() -> GLRenderer.surfaceChanged(width, height));
         }
-
     }
 
     @Override

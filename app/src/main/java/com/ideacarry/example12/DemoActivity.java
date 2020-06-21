@@ -38,6 +38,7 @@ public class DemoActivity extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                glThread.glDestroy();
             }
         });
         setContentView(surfaceView);

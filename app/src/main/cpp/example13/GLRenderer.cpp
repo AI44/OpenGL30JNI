@@ -66,6 +66,7 @@ Java_com_ideacarry_example13_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
     if (data) {
         glGenTextures(1, &textureY);
         glBindTexture(GL_TEXTURE_2D, textureY);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);//1字节对齐
         glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, IMAGE_WIDTH, IMAGE_HEIGHT, 0,
                      GL_RED, GL_UNSIGNED_BYTE, data);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -75,6 +76,7 @@ Java_com_ideacarry_example13_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
 
         glGenTextures(1, &textureVU);
         glBindTexture(GL_TEXTURE_2D, textureVU);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 2);//2字节对齐
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RG8, IMAGE_WIDTH / 2, IMAGE_HEIGHT / 2,
                      0, GL_RG, GL_UNSIGNED_BYTE, data + IMAGE_WIDTH * IMAGE_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

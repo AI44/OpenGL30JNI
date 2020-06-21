@@ -85,16 +85,12 @@ public class GLThread extends HandlerThread {
     public synchronized void start() {
         super.start();
 
-        getHandler().post(() -> {
-            createGL();
-        });
+        getHandler().post(this::createGL);
     }
 
     public void release() {
-        mHandler.post(() -> {
-            destroyGL();
-            quit();
-        });
+        mHandler.post(this::destroyGL);
+        quitSafely();
     }
 
     public Handler getHandler() {
@@ -117,27 +113,39 @@ public class GLThread extends HandlerThread {
             //EGL14.eglMakeCurrent(eglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
 
             mRenderer.onSurfaceCreated(null, null);
+
+            mIsRun = true;
         });
     }
 
     public void render(final Surface surface, final int width, final int height) {
         mHandler.post(() -> {
-            mRenderer.onSurfaceChanged(null, width, height);
+            if (mIsRun) {
+                mRenderer.onSurfaceChanged(null, width, height);
 
-            drawFrame();
+                postDrawFrame();
+            }
         });
     }
 
+    private volatile boolean mIsRun = false;
+
+    public void glDestroy() {
+        mIsRun = false;
+    }
+
     private Runnable mRunnable = () -> {
-        mRenderer.onDrawFrame(null);
+        if (mIsRun) {
+            mRenderer.onDrawFrame(null);
 
-        // 交换显存(将surface显存和显示器的显存交换)
-        EGL14.eglSwapBuffers(eglDisplay, eglSurface);
+            postDrawFrame();
 
-        drawFrame();
+            // 交换显存(将surface显存和显示器的显存交换)
+            EGL14.eglSwapBuffers(eglDisplay, eglSurface);
+        }
     };
 
-    private void drawFrame() {
+    private void postDrawFrame() {
         mHandler.removeCallbacks(mRunnable);
         mHandler.postDelayed(mRunnable, 20);
     }

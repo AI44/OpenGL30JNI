@@ -58,6 +58,12 @@ public class DemoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        mGlThread.release();
+        super.onDestroy();
+    }
+
     private void startCamera() {
         System.out.println("startCamera " + Thread.currentThread().getId());
         final ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);

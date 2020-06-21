@@ -2,6 +2,7 @@
 #include "java/Context.h"
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
+#include <image/ImageUtils.h>
 #include "java/AssetManager.h"
 #include "java/BitmapFactory.h"
 #include "java/BitmapFactoryOptions.h"
@@ -147,6 +148,48 @@ jobject readAssetImage(JNIEnv *env, jobject context, const char *fileName) {
     env->DeleteLocalRef(assetManagerObj);
 
     return bmp;
+}
+
+GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path) {
+    return loadAssetsTexture2D(env, context, path, GL_CLAMP_TO_EDGE);
+}
+
+GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path, GLint textureWrapping) {
+    GLuint id;
+    glGenTextures(1, &id);
+
+    jobject bmp = readAssetImage(env, context, path);
+    Image8888 img;
+    img.SetImage(env, bmp);
+    if (bmp) {
+        glBindTexture(GL_TEXTURE_2D, id);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, img.m_width, img.m_height, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, img.m_pDatas);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapping);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapping);
+
+        img.ClearAll();
+        env->DeleteLocalRef(bmp);
+    }
+
+    return id;
+}
+
+GLuint createRGBATexture2D(int w, int h) {
+    GLuint id;
+    glGenTextures(1, &id);
+    glBindTexture(GL_TEXTURE_2D, id);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    return id;
 }
 
 esUtils::Shader::Shader(JNIEnv *env, jobject context, const char *vertexAssetsPath, const char *fragmentAssetsPath) {

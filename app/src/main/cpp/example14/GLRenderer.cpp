@@ -102,6 +102,10 @@ Java_com_ideacarry_example14_GLRenderer_drawFrame(JNIEnv *env, jclass clazz, jin
     glBindVertexArray(quadVAO);
     // use the color attachment texture as the texture of the quad plane
     glBindTexture(GL_TEXTURE_EXTERNAL_OES, texture_id);
+    // 你可能会奇怪为什么sampler2D变量是个uniform，我们却不用glUniform给它赋值。
+    // 使用glUniform1i，我们可以给纹理采样器分配一个位置值，这样的话我们能够在一个片段着色器中设置多个纹理。
+    // 一个纹理的位置值通常称为一个纹理单元(Texture Unit)。一个纹理的默认纹理单元是0，它是默认的激活纹理单元，
+    // 所以我们没有分配一个位置值。
     checkGlError("glBindTexture");
     glDrawArrays(GL_TRIANGLES, 0, 6);
 

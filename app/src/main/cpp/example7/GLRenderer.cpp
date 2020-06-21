@@ -102,6 +102,7 @@ Java_com_ideacarry_example7_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz,
     jobject bmp = readAssetImage(env, context, "wall.jpg");
     Image8888 img;
     img.SetImage(env, bmp);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_width, img.m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                  img.m_pDatas);
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -116,6 +117,7 @@ Java_com_ideacarry_example7_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     bmp = readAssetImage(env, context, "awesomeface.png");
     img.SetImage(env, bmp);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_width, img.m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                  img.m_pDatas);
     glGenerateMipmap(GL_TEXTURE_2D);

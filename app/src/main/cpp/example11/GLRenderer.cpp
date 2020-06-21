@@ -64,6 +64,7 @@ namespace example11 {
                 GLuint texture;
                 glGenTextures(1, &texture);
                 glBindTexture(GL_TEXTURE_2D, texture);
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);//1字节对齐
                 glTexImage2D(
                         GL_TEXTURE_2D,
                         0,

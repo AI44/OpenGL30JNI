@@ -23,5 +23,4 @@ protected:
 	virtual jclass getClass();
 };
 
-
 #endif //SECURITYJNILIBS2016_OBJECT_H

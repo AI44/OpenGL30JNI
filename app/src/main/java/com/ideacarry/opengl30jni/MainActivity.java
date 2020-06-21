@@ -27,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("8.lookAt + 欧拉角", com.ideacarry.example8.DemoActivity.class));
         LIST_DATA.add(new ItemData("9.基础光照", com.ideacarry.example9.DemoActivity.class));
         LIST_DATA.add(new ItemData("10.材质光照", com.ideacarry.example10.DemoActivity.class));
-        LIST_DATA.add(new ItemData("11.freetype加载文字", com.ideacarry.example11.DemoActivity.class));
+        LIST_DATA.add(new ItemData("11.FreeType加载文字", com.ideacarry.example11.DemoActivity.class));
         LIST_DATA.add(new ItemData("12.自建gl环境 + surfaceView", com.ideacarry.example12.DemoActivity.class));
         LIST_DATA.add(new ItemData("13.渲染yuv数据", com.ideacarry.example13.DemoActivity.class));
         LIST_DATA.add(new ItemData("14.CameraX+SurfaceTexture+SurfaceView", com.ideacarry.example14.DemoActivity.class));
         LIST_DATA.add(new ItemData("15.framebuffer", com.ideacarry.example15.DemoActivity.class));
+        LIST_DATA.add(new ItemData("16.美颜 + textureView", com.ideacarry.example16.DemoActivity.class));
+        LIST_DATA.add(new ItemData("17.LUT", com.ideacarry.example17.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 

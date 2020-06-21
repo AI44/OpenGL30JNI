@@ -13,7 +13,7 @@ extern "C"
 
 #include <android/log.h>
 
-#define LOG_TAG "opengles30ndk_log"
+#define LOG_TAG "OpenGL_log"
 
 #define base_LOG(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
