@@ -93,13 +93,13 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
     if (bmp) {
 #define LUT_WIDTH 16
 #define LUT_HEIGHT 16
-#define LUT_DEPTH 16
 #define LUT_W_NUM 4
 #define LUT_H_NUM 4
+        int depth = LUT_W_NUM * LUT_H_NUM;
         glGenTextures(1, &lutTexture3D);
         glBindTexture(GL_TEXTURE_3D, lutTexture3D);
         checkGlError("glBindTexture 3D");
-        glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, LUT_WIDTH, LUT_HEIGHT, LUT_DEPTH, 0,
+        glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, LUT_WIDTH, LUT_HEIGHT, depth, 0,
                      GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
         checkGlError("glTexImage3D");
         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -109,13 +109,12 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
         glPixelStorei(GL_UNPACK_ROW_LENGTH, img.m_width);
-        int count = LUT_W_NUM * LUT_H_NUM;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < depth; i++) {
             glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, i, LUT_WIDTH,
                             LUT_HEIGHT, 1, GL_RGBA, GL_UNSIGNED_BYTE,
                             img.m_pDatas +
                             i / LUT_W_NUM * LUT_WIDTH * LUT_HEIGHT * LUT_W_NUM * 4 +
-                            (i % LUT_H_NUM) * LUT_WIDTH * 4);
+                            (i % LUT_W_NUM) * LUT_WIDTH * 4);
             checkGlError("glTexSubImage3D");
         }
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
