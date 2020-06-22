@@ -26,6 +26,11 @@ jobject BitmapFactoryOptions::newObjectARGB8888() {
 
     mEnv->SetObjectField(obj, opt_fieldID, argb8888);
 
+    jfieldID inPreferQualityOverSpeed_fieldID = mEnv->GetFieldID(mCls, "inPreferQualityOverSpeed", "Z");
+    if (inPreferQualityOverSpeed_fieldID) {
+        mEnv->SetBooleanField(obj, inPreferQualityOverSpeed_fieldID, true);
+    }
+
     mEnv->DeleteLocalRef(argb8888);
     mEnv->DeleteLocalRef(cfg_cls);
 

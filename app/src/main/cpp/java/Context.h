@@ -17,6 +17,8 @@ public:
 
 	jobject getAssets(jobject instance);
 
+	jobject getResources(jobject instance);
+
 protected:
 	jclass getClass();
 };

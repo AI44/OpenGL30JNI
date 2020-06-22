@@ -24,6 +24,10 @@ uint8_t *readAssetFile(JNIEnv *env, jobject context, const char *fileName, bool 
 
 jobject readAssetImage(JNIEnv *env, jobject context, const char *fileName);
 
+jobject readRawResImage(JNIEnv *env, jobject context, jint id);
+
+jobject readPathImage(JNIEnv *env, const char *path);
+
 GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path);
 
 GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path, GLint textureWrapping);

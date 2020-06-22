@@ -26,3 +26,8 @@ jobject Context::getAssets(jobject instance)
 	jmethodID id = mEnv->GetMethodID(getClass(), "getAssets", "()Landroid/content/res/AssetManager;");
 	return mEnv->CallObjectMethod(instance, id);
 }
+
+jobject Context::getResources(jobject instance) {
+	jmethodID id = mEnv->GetMethodID(getClass(), "getResources", "()Landroid/content/res/Resources;");
+	return mEnv->CallObjectMethod(instance, id);
+}

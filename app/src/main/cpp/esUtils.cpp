@@ -6,6 +6,7 @@
 #include "java/AssetManager.h"
 #include "java/BitmapFactory.h"
 #include "java/BitmapFactoryOptions.h"
+#include "java/Resources.h"
 
 bool checkGlError(const char *funcName) {
     GLint err = glGetError();
@@ -146,6 +147,44 @@ jobject readAssetImage(JNIEnv *env, jobject context, const char *fileName) {
     env->DeleteLocalRef(inputStreamObj);
     env->DeleteLocalRef(fileNameObj);
     env->DeleteLocalRef(assetManagerObj);
+
+    return bmp;
+}
+
+jobject readRawResImage(JNIEnv *env, jobject context, jint id) {
+
+    jobject bmp = nullptr;
+
+    Context ctx(env);
+    jobject resourcesObj = ctx.getResources(context);
+    Resources resources(env);
+    jobject inputStreamObj = resources.openRawResource(resourcesObj, id);
+    BitmapFactory bf(env);
+    BitmapFactoryOptions bfo(env);
+    jobject optsObj = bfo.newObjectARGB8888();
+
+    bmp = bf.decodeStream(inputStreamObj, nullptr, optsObj);
+
+    env->DeleteLocalRef(optsObj);
+    env->DeleteLocalRef(inputStreamObj);
+    env->DeleteLocalRef(resourcesObj);
+
+    return bmp;
+}
+
+jobject readPathImage(JNIEnv *env, const char *path) {
+
+    jobject bmp = nullptr;
+
+    jstring pathObj = env->NewStringUTF(path);
+    BitmapFactory bf(env);
+    BitmapFactoryOptions bfo(env);
+    jobject optsObj = bfo.newObjectARGB8888();
+
+    bmp = bf.decodeFile(pathObj, optsObj);
+
+    env->DeleteLocalRef(optsObj);
+    env->DeleteLocalRef(pathObj);
 
     return bmp;
 }

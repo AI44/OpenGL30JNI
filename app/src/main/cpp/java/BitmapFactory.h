@@ -17,6 +17,8 @@ public:
 
     jobject decodeStream(jobject inputStream, jobject outPadding, jobject opts);
 
+    jobject decodeFile(jstring pathName, jobject opts);
+
 protected:
     jclass getClass();
 };
