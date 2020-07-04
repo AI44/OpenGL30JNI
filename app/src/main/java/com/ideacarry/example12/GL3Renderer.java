@@ -91,7 +91,7 @@ public class GL3Renderer implements GLSurfaceView.Renderer {
     /**
      * 创建shader程序的方法
      */
-    private static int createProgram(String vertexSource, String fragmentSource) {
+    public static int createProgram(String vertexSource, String fragmentSource) {
         //加载顶点着色器
         int vertexShader = loadShader(GLES30.GL_VERTEX_SHADER, vertexSource);
         if (vertexShader == 0) {

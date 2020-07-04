@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("15.framebuffer", com.ideacarry.example15.DemoActivity.class));
         LIST_DATA.add(new ItemData("16.美颜 + textureView", com.ideacarry.example16.DemoActivity.class));
         LIST_DATA.add(new ItemData("17.LUT滤镜", com.ideacarry.example17.DemoActivity.class));
+        LIST_DATA.add(new ItemData("18.离屏渲染", com.ideacarry.example18.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 
