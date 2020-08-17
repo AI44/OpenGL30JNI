@@ -79,6 +79,9 @@ aux_source_directory(./example16/filter example16_filter)
 include_directories(./example17)
 aux_source_directory(./example17 example17)
 
+include_directories(./example19)
+aux_source_directory(./example19 example19)
+
 add_library(
         native-lib
 
@@ -105,6 +108,7 @@ add_library(
         ${example16}
         ${example16_filter}
         ${example17}
+        ${example19}
         native-lib.cpp)
 
 find_library(
@@ -118,6 +122,7 @@ target_link_libraries(
         android
         jnigraphics
         GLESv3
+        m
         #EGL
         freetype2lib
         ${log-lib})

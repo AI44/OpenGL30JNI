@@ -194,10 +194,16 @@ GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path) {
 }
 
 GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path, GLint textureWrapping) {
+    jobject bmp = readAssetImage(env, context, path);
+    GLuint re = loadAssetsTexture2D(env, bmp, textureWrapping);
+    env->DeleteLocalRef(bmp);
+    return re;
+}
+
+GLuint loadAssetsTexture2D(JNIEnv *env, jobject bmp, GLint textureWrapping) {
     GLuint id;
     glGenTextures(1, &id);
 
-    jobject bmp = readAssetImage(env, context, path);
     Image8888 img;
     img.SetImage(env, bmp);
     if (bmp) {
@@ -211,7 +217,6 @@ GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path, GLint
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapping);
 
         img.ClearAll();
-        env->DeleteLocalRef(bmp);
     }
 
     return id;

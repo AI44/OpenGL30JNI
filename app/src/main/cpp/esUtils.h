@@ -32,6 +32,8 @@ GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path);
 
 GLuint loadAssetsTexture2D(JNIEnv *env, jobject context, char const *path, GLint textureWrapping);
 
+GLuint loadAssetsTexture2D(JNIEnv *env, jobject bmp, GLint textureWrapping);
+
 GLuint createRGBATexture2D(int w, int h);
 
 namespace esUtils {
