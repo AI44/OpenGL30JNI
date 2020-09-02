@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("17.LUT滤镜", com.ideacarry.example17.DemoActivity.class));
         LIST_DATA.add(new ItemData("18.离屏渲染", com.ideacarry.example18.DemoActivity.class));
         LIST_DATA.add(new ItemData("19.人脸点渲染图像", com.ideacarry.example19.DemoActivity.class));
+        LIST_DATA.add(new ItemData("20.镜头效果测试", com.ideacarry.example20.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 

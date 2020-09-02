@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.grafika.gles.EglCore;
 import com.android.grafika.gles.GlUtil;
 import com.android.grafika.gles.OffscreenSurface;
-import com.ideacarry.example1.GL2Renderer;
 import com.ideacarry.example12.GL3Renderer;
+import com.ideacarry.utils.GLUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -142,7 +142,7 @@ public class DemoActivity extends AppCompatActivity {
             GLES30.glGenBuffers(1, framebufferVbo);
             GLES30.glBindVertexArray(framebufferVao.get(0));
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, framebufferVbo.get(0));
-            GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, VERTICES.length * 4, GL2Renderer.getFloatBuffer(VERTICES), GLES30.GL_STATIC_DRAW);
+            GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, VERTICES.length * 4, GLUtils.getFloatBuffer(VERTICES), GLES30.GL_STATIC_DRAW);
             GLES30.glEnableVertexAttribArray(0);
             GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 3 * 4, 0);
             GLES30.glBindVertexArray(0);
@@ -153,7 +153,7 @@ public class DemoActivity extends AppCompatActivity {
             GLES30.glGenBuffers(1, screenVbo);
             GLES30.glBindVertexArray(screenVao.get(0));
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, screenVbo.get(0));
-            GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, QUAD_VERTICES.length * 4, GL2Renderer.getFloatBuffer(QUAD_VERTICES), GLES30.GL_STATIC_DRAW);
+            GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, QUAD_VERTICES.length * 4, GLUtils.getFloatBuffer(QUAD_VERTICES), GLES30.GL_STATIC_DRAW);
             GLES30.glEnableVertexAttribArray(0);
             GLES30.glVertexAttribPointer(0, 2, GLES30.GL_FLOAT, false, 4 * 4, 0);
             GLES30.glEnableVertexAttribArray(1);

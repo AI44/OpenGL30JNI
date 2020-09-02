@@ -5,7 +5,7 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import com.ideacarry.example1.GL2Renderer;
+import com.ideacarry.utils.GLUtils;
 
 import java.nio.IntBuffer;
 
@@ -24,7 +24,7 @@ public class GL3Renderer implements GLSurfaceView.Renderer {
         program = createProgram(vertexShaderCode, fragmentShaderCode);
         if (program != 0) {
             //准备三角形的坐标数据
-            GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, GL2Renderer.getFloatBuffer(vertices));
+            GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, GLUtils.getFloatBuffer(vertices));
             //启用三角形顶点的句柄
             GLES30.glEnableVertexAttribArray(0);
             //禁止顶点数组的句柄

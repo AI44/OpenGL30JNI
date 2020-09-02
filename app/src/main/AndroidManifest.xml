@@ -86,6 +86,10 @@
         <activity
             android:name="com.ideacarry.example19.DemoActivity"
             android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example20.DemoActivity"
+            android:screenOrientation="behind"
+            android:theme="@style/CameraActivityTheme" />
     </application>
 
 </manifest>

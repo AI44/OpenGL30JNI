@@ -4,8 +4,8 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import com.ideacarry.utils.GLUtils;
+
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -160,17 +160,6 @@ public class GL2Renderer implements GLSurfaceView.Renderer {
                 0.5f, -0.5f,
         };
 
-        return getFloatBuffer(vertices);
-    }
-
-    public static FloatBuffer getFloatBuffer(float[] arr) {
-        // 创建顶点坐标数据缓冲
-        // vertices.length*4是因为一个float占四个字节
-        ByteBuffer vbb = ByteBuffer.allocateDirect(arr.length * 4);
-        vbb.order(ByteOrder.nativeOrder()); //设置字节顺序
-        FloatBuffer vertexBuf = vbb.asFloatBuffer(); //转换为Float型缓冲
-        vertexBuf.put(arr); //向缓冲区中放入顶点坐标数据
-        vertexBuf.position(0); //设置缓冲区起始位置
-        return vertexBuf;
+        return GLUtils.getFloatBuffer(vertices);
     }
 }
