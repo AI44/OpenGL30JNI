@@ -3,8 +3,8 @@
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
-layout (location = 2) uniform highp float texelWidthOffset;
-layout (location = 3) uniform highp float texelHeightOffset;
+uniform highp float texelWidthOffset;
+uniform highp float texelHeightOffset;
 
 out vec2 TexCoords;
 out vec4 textureShift_1;

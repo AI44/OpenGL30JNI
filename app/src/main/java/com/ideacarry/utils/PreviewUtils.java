@@ -1,4 +1,4 @@
-package com.ideacarry.example14;
+package com.ideacarry.utils;
 
 import android.graphics.Point;
 import android.util.Size;

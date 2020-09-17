@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLES30;
 import android.util.Size;
 
+import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.GLUtils;
 import com.ideacarry.utils.TextureManager;
 

@@ -6,7 +6,12 @@
 
 Resources::Resources(JNIEnv *env) : Object(env) {}
 
-Resources::~Resources() {}
+Resources::~Resources() {
+    if (mCls) {
+        mEnv->DeleteLocalRef(mCls);
+        mCls = nullptr;
+    }
+}
 
 jclass Resources::getClass() {
     if (!mCls) {

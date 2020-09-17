@@ -2,13 +2,15 @@ package com.ideacarry.opengl30jni;
 
 import android.content.Context;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.ideacarry.example21.Filter4BlurNew;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -23,5 +25,9 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.ideacarry.opengl30jni", appContext.getPackageName());
+
+        Filter4BlurNew.printGaussianKernel(1.6f);
+        System.out.println("-----------------------");
+        Filter4BlurNew.printGaussianKernel2(5);
     }
 }

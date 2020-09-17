@@ -10,6 +10,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     private Context context;
     private int bgColor;
+    private volatile int mMode;
 
     public GLRenderer(Context context, int bgColor) {
         this.context = context;
@@ -28,12 +29,16 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        drawFrame();
+        drawFrame(mMode);
     }
 
     private native void surfaceCreated(Context context, int bgColor);
 
     private native void surfaceChanged(int width, int height);
 
-    private native void drawFrame();
+    private native void drawFrame(int mode);
+
+    public void setMode(int mode) {
+        mMode = mode;
+    }
 }

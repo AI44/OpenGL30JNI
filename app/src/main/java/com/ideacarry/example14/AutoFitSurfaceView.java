@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.ideacarry.utils.PreviewUtils;
+
 public class AutoFitSurfaceView extends SurfaceView {
 
     private View mParent;

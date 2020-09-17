@@ -3,24 +3,25 @@ package com.ideacarry.example20.filter;
 import android.content.Context;
 import android.opengl.GLES30;
 
-import com.android.grafika.gles.GlUtil;
+import com.ideacarry.stable.filter.IUnitFilter;
 import com.ideacarry.utils.CommonUtils;
+import com.ideacarry.utils.GLShaderProgram;
 
 /**
  * @see <a href="https://github.com/CainKernel/CainCamera">CainCamera</a>
  */
 public class BeautyHighPassUnitFilter implements IUnitFilter {
 
-    private int mProgram = -1;
+    private GLShaderProgram mProgram;
 
     @Override
     public void onCreate(Context context) {
-        mProgram = GlUtil.createProgram(new String(CommonUtils.readAssetFile(context, "example20/filter/general_vertex.glsl")),
+        mProgram = new GLShaderProgram(new String(CommonUtils.readAssetFile(context, "example20/filter/general_vertex.glsl")),
                 new String(CommonUtils.readAssetFile(context, "example20/filter/fragment_beauty_highpass.glsl")));
 
-        GLES30.glUseProgram(mProgram);
-        GLES30.glUniform1i(0, 0);
-        GLES30.glUniform1i(1, 1);
+        mProgram.use();
+        mProgram.setInt("inputTexture", 0);
+        mProgram.setInt("blurTexture", 1);
     }
 
     @Override
@@ -32,10 +33,10 @@ public class BeautyHighPassUnitFilter implements IUnitFilter {
      */
     @Override
     public void onDraw(int width, int height, int commonVao, int... textures) {
-        GLES30.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
-        GLES30.glUseProgram(mProgram);
+        mProgram.use();
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textures[0]);
         GLES30.glActiveTexture(GLES30.GL_TEXTURE1);
@@ -51,9 +52,9 @@ public class BeautyHighPassUnitFilter implements IUnitFilter {
 
     @Override
     public void onDestroy(Context context) {
-        if (mProgram > -1) {
-            GLES30.glDeleteProgram(mProgram);
-            mProgram = -1;
+        if (mProgram != null) {
+            mProgram.release();
+            mProgram = null;
         }
     }
 }

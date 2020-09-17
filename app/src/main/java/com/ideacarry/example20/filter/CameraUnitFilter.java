@@ -5,17 +5,18 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 
-import com.android.grafika.gles.GlUtil;
+import com.ideacarry.stable.filter.IUnitFilter;
 import com.ideacarry.utils.CommonUtils;
+import com.ideacarry.utils.GLShaderProgram;
 
 public class CameraUnitFilter implements IUnitFilter {
 
-    private int mProgram = -1;
+    private GLShaderProgram mProgram;
     private float[] mMatrix = new float[16];
 
     @Override
     public void onCreate(Context context) {
-        mProgram = GlUtil.createProgram(new String(CommonUtils.readAssetFile(context, "example20/camera/camera_vertex.glsl")),
+        mProgram = new GLShaderProgram(new String(CommonUtils.readAssetFile(context, "example20/camera/camera_vertex.glsl")),
                 new String(CommonUtils.readAssetFile(context, "example20/camera/camera_fragment.glsl")));
     }
 
@@ -36,16 +37,16 @@ public class CameraUnitFilter implements IUnitFilter {
         }
         Matrix.rotateM(mMatrix, 0, degree, 0, 0, 1);
 
-        GLES30.glUseProgram(mProgram);
-        GLES30.glUniformMatrix4fv(2, 1, false, mMatrix, 0);
+        mProgram.use();
+        mProgram.setMat4("uTextureMatrix", mMatrix);
     }
 
     @Override
     public void onDraw(int width, int height, int commonVao, int... textures) {
-        GLES30.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
-        GLES30.glUseProgram(mProgram);
+        mProgram.use();
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textures[0]);
 
@@ -61,9 +62,9 @@ public class CameraUnitFilter implements IUnitFilter {
 
     @Override
     public void onDestroy(Context context) {
-        if (mProgram > -1) {
-            GLES30.glDeleteProgram(mProgram);
-            mProgram = -1;
+        if (mProgram != null) {
+            mProgram.release();
+            mProgram = null;
         }
     }
 }

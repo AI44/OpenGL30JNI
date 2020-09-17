@@ -26,19 +26,19 @@ void SkinFilter::init(JNIEnv *env, jobject context) {
     mBeautyLUTTextureId = loadAssetsTexture2D(env, context, "example16/beauty_filter.png");
 
     mShader->use();
-    glUniform1i(2, 2);//inputImageTexture
-    glUniform1i(3, 3);//grayTexture
-    glUniform1i(4, 4);//lookupTexture
-    glUniform1f(5, 1.040816f);//levelRangeInv
-    glUniform1f(6, 0.01960784f);//levelBlack
-    glUniform1f(7, 0.5f);//alpha(0.0f - 0.5f)
+    mShader->setInt("inputImageTexture", 2);
+    mShader->setInt("grayTexture", 3);
+    mShader->setInt("lookupTexture", 4);
+    mShader->setFloat("levelRangeInv", 1.040816f);
+    mShader->setFloat("levelBlack", 0.01960784f);
+    mShader->setFloat("alpha", 0.5f);
 }
 
 void SkinFilter::onDraw(GLuint framebuffer, GLuint texture, GLuint vao) {
     //美白
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mShader->use();

@@ -24,12 +24,12 @@ void BeautyBlurFilter::init(JNIEnv *env, jobject context) {
 void BeautyBlurFilter::onDraw(GLuint framebuffer, GLuint texture, float horizontalBlurSize, float verticalBlurSize, GLuint vao) {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mShader->use();
-    glUniform1f(2, horizontalBlurSize);//texelWidthOffset
-    glUniform1f(3, verticalBlurSize);//texelHeightOffset
+    mShader->setFloat("texelWidthOffset", horizontalBlurSize);
+    mShader->setFloat("texelHeightOffset", verticalBlurSize);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(vao);

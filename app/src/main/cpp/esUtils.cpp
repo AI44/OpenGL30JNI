@@ -307,6 +307,10 @@ void esUtils::Shader::setMat4(const char *name, const glm::mat4 &mat) const {
     glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &mat[0][0]);
 }
 
+void esUtils::Shader::setMat4(const char *name, const float *fv) const {
+    glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, fv);
+}
+
 void esUtils::Shader::checkCompileErrors(GLuint shader, const CompileType type) {
     GLint success;
     GLchar infoLog[1024];

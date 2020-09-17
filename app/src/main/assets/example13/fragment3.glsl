@@ -3,8 +3,8 @@ precision mediump float;
 
 //nv21 -> rgb
 //width and height are multiples of 2
-layout (location = 3) uniform sampler2D uTextureY;
-layout (location = 4) uniform sampler2D uTextureVU;
+uniform sampler2D uTextureY;
+uniform sampler2D uTextureVU;
 
 in vec2 TexCoords;
 

@@ -26,12 +26,11 @@ void CameraFilter::onDraw(GLuint framebuffer, GLuint texture, GLuint vao, float 
     //camera
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     // make sure we clear the framebuffer's content
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mShader->use();
-    //layout (location = 2)
-    glUniformMatrix4fv(2, 1, GL_FALSE, matrix);
+    mShader->setMat4("uTextureMatrix", matrix);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_EXTERNAL_OES, texture);

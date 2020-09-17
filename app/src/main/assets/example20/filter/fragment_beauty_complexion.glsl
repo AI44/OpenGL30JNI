@@ -6,13 +6,13 @@ precision mediump float;
 in vec2 TexCoords;
 out vec4 FragColor;
 
-layout (location = 3) uniform sampler2D inputTexture;// image texture
-layout (location = 4) uniform sampler2D grayTexture;// gray table
-layout (location = 5) uniform sampler2D lookupTexture;// LUT
+uniform sampler2D inputTexture;// image texture
+uniform sampler2D grayTexture;// gray table
+uniform sampler2D lookupTexture;// LUT
 
-layout (location = 6) uniform highp float levelRangeInv;// range
-layout (location = 7) uniform lowp float levelBlack;// gray level
-layout (location = 8) uniform lowp float alpha;// skin alpha
+uniform highp float levelRangeInv;// range
+uniform lowp float levelBlack;// gray level
+uniform lowp float alpha;// skin alpha
 
 void main() {
     vec3 textureColor = texture(inputTexture, TexCoords).rgb;

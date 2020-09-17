@@ -25,10 +25,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.ideacarry.example14.PermissionUtils;
-import com.ideacarry.example14.PreviewUtils;
 import com.ideacarry.utils.CommonUtils;
 import com.ideacarry.utils.OrientationProvider;
+import com.ideacarry.utils.PermissionUtils;
+import com.ideacarry.utils.PreviewUtils;
 
 /**
  * Created by Raining on 2020/9/1

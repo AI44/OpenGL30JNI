@@ -127,15 +127,15 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
     lutTexture = loadAssetsTexture2D(env, context, "example17/yu4.png");
 
     orgShader->use();
-    glUniform1i(2, 0);//pic
+    orgShader->setInt("uTexturePic", 0);//pic
     lut3DShader->use();
-    glUniform1i(2, 0);//pic
-    glUniform1i(3, 1);//lut
-    glUniform1f(4, 1.0f);//intensity
+    lut3DShader->setInt("uTexturePic", 0);//pic
+    lut3DShader->setInt("uTextureLUT", 1);//lut
+    lut3DShader->setFloat("intensity", 1.0f);//intensity
     lutShader->use();
-    glUniform1i(2, 0);//pic
-    glUniform1i(3, 1);//lut
-    glUniform1f(4, 1.0f);//intensity
+    lutShader->setInt("uTexturePic", 0);//pic
+    lutShader->setInt("uTextureLUT", 1);//lut
+    lutShader->setFloat("intensity", 1.0f);//intensity
 }
 
 extern "C"

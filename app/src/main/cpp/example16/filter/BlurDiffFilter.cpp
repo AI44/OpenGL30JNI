@@ -22,14 +22,14 @@ void BlurDiffFilter::init(JNIEnv *env, jobject context) {
                                   "example16/blur_diff_fragment.glsl");
 
     mShader->use();
-    glUniform1i(2, 2);//blurTexture
-    glUniform1i(3, 3);//orgTexture
+    mShader->setInt("blurTexture", 2);
+    mShader->setInt("orgTexture", 3);
 }
 
 void BlurDiffFilter::onDraw(GLuint framebuffer, GLuint orgTexture, GLuint beautyTexture, GLuint vao) {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mShader->use();

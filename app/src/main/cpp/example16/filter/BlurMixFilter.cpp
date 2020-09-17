@@ -21,16 +21,16 @@ void BlurMixFilter::init(JNIEnv *env, jobject context) {
                                   "example16/blur_mix_fragment.glsl");
 
     mShader->use();
-    glUniform1i(2, 2);//orgTexture
-    glUniform1i(3, 3);//firstBlurTexture
-    glUniform1i(4, 4);//secondBlurTexture
-    glUniform1f(5, 1.0f);//磨皮程度(0-1.0f)
+    mShader->setInt("orgTexture", 2);
+    mShader->setInt("firstBlurTexture", 3);
+    mShader->setInt("secondBlurTexture", 4);
+    mShader->setFloat("blurAlpha", 1.0f);//磨皮程度(0-1.0f)
 }
 
 void BlurMixFilter::onDraw(GLuint framebuffer, GLuint orgTexture, GLuint firstBlurTexture, GLuint secondBlurTexture, GLuint vao) {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mShader->use();

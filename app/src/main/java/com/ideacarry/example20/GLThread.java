@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.android.grafika.gles.EglCore;
 import com.android.grafika.gles.WindowSurface;
-import com.ideacarry.example20.filter.BaseFilter;
+import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.example20.filter.BeautyFilter;
 import com.ideacarry.example20.filter.CameraFilter;
 import com.ideacarry.example20.filter.ScreenFilter;

@@ -6,7 +6,12 @@
 
 AssetManager::AssetManager(JNIEnv *env) : Object(env) {}
 
-AssetManager::~AssetManager() {}
+AssetManager::~AssetManager() {
+    if (mCls) {
+        mEnv->DeleteLocalRef(mCls);
+        mCls = nullptr;
+    }
+}
 
 jclass AssetManager::getClass() {
     if (!mCls) {

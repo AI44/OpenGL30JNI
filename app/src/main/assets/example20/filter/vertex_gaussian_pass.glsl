@@ -4,8 +4,8 @@
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
-layout (location = 2) uniform highp float texelWidthOffset;
-layout (location = 3) uniform highp float texelHeightOffset;
+uniform highp float texelWidthOffset;
+uniform highp float texelHeightOffset;
 
 out vec2 textureCoordinate;
 // 高斯算子左右偏移值，当偏移值为2时，高斯算子为5 x 5
@@ -20,6 +20,6 @@ void main() {
     // 记录偏移坐标
     for (int i = 0; i < SHIFT_SIZE; i++) {
         blurShiftCoordinates[i] = vec4(textureCoordinate.xy - float(i + 1) * singleStepOffset,
-                                       textureCoordinate.xy + float(i + 1) * singleStepOffset);
+        textureCoordinate.xy + float(i + 1) * singleStepOffset);
     }
 }

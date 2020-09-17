@@ -3,6 +3,7 @@ package com.ideacarry.example20.filter;
 import android.content.Context;
 import android.opengl.GLES30;
 
+import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.TextureManager;
 
 /**

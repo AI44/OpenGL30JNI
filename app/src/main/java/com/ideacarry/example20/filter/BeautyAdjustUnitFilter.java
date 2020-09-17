@@ -1,27 +1,27 @@
 package com.ideacarry.example20.filter;
 
 import android.content.Context;
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 
-import com.android.grafika.gles.GlUtil;
+import com.ideacarry.stable.filter.IUnitFilter;
 import com.ideacarry.utils.CommonUtils;
+import com.ideacarry.utils.GLShaderProgram;
 
 public class BeautyAdjustUnitFilter implements IUnitFilter {
 
-    protected int mProgram = -1;
+    protected GLShaderProgram mProgram;
     private float mIntensity = 0.6f;
 
     @Override
     public void onCreate(Context context) {
-        mProgram = GlUtil.createProgram(new String(CommonUtils.readAssetFile(context, "example20/filter/general_vertex.glsl")),
+        mProgram = new GLShaderProgram(new String(CommonUtils.readAssetFile(context, "example20/filter/general_vertex.glsl")),
                 new String(CommonUtils.readAssetFile(context, "example20/filter/fragment_beauty_adjust.glsl")));
 
-        GLES30.glUseProgram(mProgram);
-        GLES20.glUniform1f(6, mIntensity);
-        GLES30.glUniform1i(3, 3);
-        GLES30.glUniform1i(4, 4);
-        GLES30.glUniform1i(5, 5);
+        mProgram.use();
+        mProgram.setFloat("intensity", mIntensity);
+        mProgram.setInt("inputTexture", 3);
+        mProgram.setInt("blurTexture", 4);
+        mProgram.setInt("highPassBlurTexture", 5);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class BeautyAdjustUnitFilter implements IUnitFilter {
      */
     @Override
     public void onDraw(int width, int height, int commonVao, int... textures) {
-        GLES30.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
-        GLES30.glUseProgram(mProgram);
+        mProgram.use();
         GLES30.glActiveTexture(GLES30.GL_TEXTURE3);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textures[0]);
         GLES30.glActiveTexture(GLES30.GL_TEXTURE4);
@@ -54,9 +54,9 @@ public class BeautyAdjustUnitFilter implements IUnitFilter {
 
     @Override
     public void onDestroy(Context context) {
-        if (mProgram > -1) {
-            GLES30.glDeleteProgram(mProgram);
-            mProgram = -1;
+        if (mProgram != null) {
+            mProgram.release();
+            mProgram = null;
         }
     }
 }

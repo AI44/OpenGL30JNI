@@ -6,7 +6,12 @@
 
 BitmapFactory::BitmapFactory(JNIEnv *env) : Object(env) {}
 
-BitmapFactory::~BitmapFactory() = default;
+BitmapFactory::~BitmapFactory() {
+    if (mCls) {
+        mEnv->DeleteLocalRef(mCls);
+        mCls = nullptr;
+    }
+}
 
 jclass BitmapFactory::getClass() {
     if (!mCls) {

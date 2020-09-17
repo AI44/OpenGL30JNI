@@ -19,20 +19,36 @@ namespace example13 {
     static const int IMAGE_WIDTH = 1280;
     static const int IMAGE_HEIGHT = 720;
 
-    static esUtils::Shader *shader = nullptr;
+    static esUtils::Shader *shader1 = nullptr;
+    static esUtils::Shader *shader2 = nullptr;
+    static esUtils::Shader *shader3 = nullptr;
     static GLuint textureY;
     static GLuint textureVU;
     static GLuint quadVAO, quadVBO;
+
+    static void clearProgram() {
+        if (shader1) {
+            shader1->release();
+            delete shader1;
+            shader1 = nullptr;
+        }
+        if (shader2) {
+            shader2->release();
+            delete shader2;
+            shader2 = nullptr;
+        }
+        if (shader3) {
+            shader3->release();
+            delete shader3;
+            shader3 = nullptr;
+        }
+    }
 
     static void release() {
         glDeleteVertexArrays(1, &quadVAO);
         glDeleteBuffers(1, &quadVBO);
 
-        if (shader) {
-            shader->release();
-            delete shader;
-            shader = nullptr;
-        }
+        clearProgram();
     }
 }
 
@@ -41,13 +57,13 @@ using namespace example13;
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_ideacarry_example13_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz, jobject context, jint bg_color) {
-    if (shader) {
-        shader->release();
-        delete shader;
-        shader = nullptr;
-    }
-    shader = new esUtils::Shader(env, context, "example13/vertex.glsl",
+    clearProgram();
+    shader1 = new esUtils::Shader(env, context, "example13/vertex.glsl",
                                  "example13/fragment.glsl");
+    shader2 = new esUtils::Shader(env, context, "example13/vertex.glsl",
+                                  "example13/fragment2.glsl");
+    shader3 = new esUtils::Shader(env, context, "example13/vertex.glsl",
+                                  "example13/fragment3.glsl");
 
     glGenVertexArrays(1, &quadVAO);
     glGenBuffers(1, &quadVBO);
@@ -86,25 +102,30 @@ Java_com_ideacarry_example13_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
 
         delete data;
     }
-    //设置常量到program
-    shader->use();
-    //设置常量y
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureY);
-    glUniform1i(3, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    //设置常量vu
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureVU);
-    glUniform1i(4, 1);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    //matrix
     glm::mat4 matrix = glm::mat4(1.0f);
     //顺时针旋转90度
     matrix = glm::rotate(matrix, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     //左右翻转
     matrix = glm::scale(matrix, glm::vec3(1.0f, -1.0f, 1.0f));
-    glUniformMatrix4fv(2, 1, GL_FALSE, &matrix[0][0]);
+
+    //设置常量到program
+    shader1->use();
+    //设置常量y
+    shader1->setInt("uTextureY", 0);
+    //设置常量vu
+    shader1->setInt("uTextureVU", 1);
+    //matrix
+    shader1->setMat4("uTextureMatrix", matrix);
+
+    shader2->use();
+    shader2->setInt("uTextureY", 0);
+    shader2->setInt("uTextureVU", 1);
+    shader2->setMat4("uTextureMatrix", matrix);
+
+    shader3->use();
+    shader3->setInt("uTextureY", 0);
+    shader3->setInt("uTextureVU", 1);
+    shader3->setMat4("uTextureMatrix", matrix);
 }
 
 extern "C"
@@ -115,7 +136,22 @@ Java_com_ideacarry_example13_GLRenderer_surfaceChanged(JNIEnv *env, jobject thiz
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_ideacarry_example13_GLRenderer_drawFrame(JNIEnv *env, jobject thiz) {
+Java_com_ideacarry_example13_GLRenderer_drawFrame(JNIEnv *env, jobject thiz, jint mode) {
+    esUtils::Shader *shader = nullptr;
+    switch (mode) {
+        case 0:
+            shader = shader1;
+            break;
+        case 1:
+            shader = shader2;
+            break;
+        case 2:
+            shader = shader3;
+            break;
+        default:
+            break;
+    }
+
     if (shader) {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

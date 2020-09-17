@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLES30;
 
 import com.android.grafika.gles.GlUtil;
+import com.ideacarry.stable.filter.IUnitFilter;
 import com.ideacarry.utils.CommonUtils;
 
 public class ScreenUnitFilter implements IUnitFilter {

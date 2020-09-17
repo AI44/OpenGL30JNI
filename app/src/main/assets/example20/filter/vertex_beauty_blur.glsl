@@ -3,8 +3,8 @@
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
-layout (location = 2) uniform float texelWidthOffset;
-layout (location = 3) uniform float texelHeightOffset;
+uniform float texelWidthOffset;
+uniform float texelHeightOffset;
 
 // 高斯算子左右偏移值，当偏移值为5时，高斯算子为 11 x 11
 const int SHIFT_SIZE = 5;

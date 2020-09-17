@@ -3,10 +3,10 @@ precision mediump float;
 
 in vec2 TexCoords;
 
-layout (location = 3) uniform sampler2D inputTexture;// 输入原图
-layout (location = 4) uniform sampler2D blurTexture;// 原图的高斯模糊纹理
-layout (location = 5) uniform sampler2D highPassBlurTexture;// 高反差保留的高斯模糊纹理
-layout (location = 6) uniform lowp float intensity;// 磨皮程度
+uniform sampler2D inputTexture;// 输入原图
+uniform sampler2D blurTexture;// 原图的高斯模糊纹理
+uniform sampler2D highPassBlurTexture;// 高反差保留的高斯模糊纹理
+uniform lowp float intensity;// 磨皮程度
 
 out vec4 FragColor;
 

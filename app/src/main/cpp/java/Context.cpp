@@ -10,6 +10,10 @@ Context::Context(JNIEnv *env) : Object(env)
 
 Context::~Context()
 {
+	if (mCls) {
+		mEnv->DeleteLocalRef(mCls);
+		mCls = nullptr;
+	}
 }
 
 jclass Context::getClass()

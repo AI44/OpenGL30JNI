@@ -4,10 +4,10 @@ precision mediump float;
 out vec4 FragColor;
 in vec2 TexCoords;
 
-layout (location = 2) uniform sampler2D orgTexture;
-layout (location = 3) uniform sampler2D firstBlurTexture;
-layout (location = 4) uniform sampler2D secondBlurTexture;
-layout (location = 5) uniform lowp float blurAlpha;
+uniform sampler2D orgTexture;
+uniform sampler2D firstBlurTexture;
+uniform sampler2D secondBlurTexture;
+uniform lowp float blurAlpha;
 
 void main() {
     lowp vec4 iColor = texture(orgTexture, TexCoords);

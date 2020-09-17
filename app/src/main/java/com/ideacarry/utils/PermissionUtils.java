@@ -1,4 +1,4 @@
-package com.ideacarry.example14;
+package com.ideacarry.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

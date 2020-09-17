@@ -1,4 +1,4 @@
-package com.ideacarry.example20.filter;
+package com.ideacarry.stable.filter;
 
 import com.ideacarry.utils.TextureManager;
 

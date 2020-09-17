@@ -22,7 +22,7 @@
 namespace example2 {
     static const char *vertexShaderCode =
             "#version 300 es\n"
-            "layout(location = 0) in vec3 aPos;"
+            "layout (location = 0) in vec3 aPos;"
             "out vec4 color;"
             "void main(){"
             "gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);"

@@ -3,6 +3,7 @@ package com.ideacarry.example20.filter;
 import android.content.Context;
 import android.opengl.GLES30;
 
+import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.TextureManager;
 
 /**
@@ -118,12 +119,12 @@ public class BeautyFilter extends BaseFilter {
         temp = mTextureManager.getData(w, h, true);
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, temp.framebuffer);
         mBeautyAdjustFilter.onDraw(w, h, commonVao, src.texture, blur.texture, highPassBlur.texture);
-        mTextureManager.release(src);
-        mTextureManager.release(blur);
-        mTextureManager.release(highPassBlur);
         data = temp;
 
         //clear
+        mTextureManager.release(src);
+        mTextureManager.release(blur);
+        mTextureManager.release(highPassBlur);
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
 
         return data;

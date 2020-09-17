@@ -17,8 +17,6 @@ import com.android.grafika.gles.OffscreenSurface;
 import com.ideacarry.example12.GL3Renderer;
 import com.ideacarry.utils.GLUtils;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 /**
@@ -62,13 +60,7 @@ public class DemoActivity extends AppCompatActivity {
             GLES30.glFinish();
 
             //离屏渲染到bitmap
-            ByteBuffer buf = ByteBuffer.allocateDirect(W * H * 4);
-            buf.order(ByteOrder.LITTLE_ENDIAN);
-            GLES30.glReadPixels(0, 0, W, H, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, buf);
-            GlUtil.checkGlError("glReadPixels");
-            buf.rewind();
-            final Bitmap bmp = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888);
-            bmp.copyPixelsFromBuffer(buf);
+            final Bitmap bmp = offscreenSurface.saveFrame();
 
             //显示到UI
             Handler handler = new Handler(Looper.getMainLooper());

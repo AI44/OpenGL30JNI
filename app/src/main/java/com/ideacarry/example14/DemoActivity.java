@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.ideacarry.utils.PermissionUtils;
 
 /**
  * #I# CameraX+SurfaceTexture+SurfaceView

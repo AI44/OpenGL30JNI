@@ -3,7 +3,7 @@
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
-layout (location = 2) uniform mat4 uTextureMatrix;
+uniform mat4 uTextureMatrix;
 
 out vec2 TexCoords;
 

@@ -51,6 +51,7 @@ public class EglSurfaceBase {
     /**
      * Creates a window surface.
      * <p>
+     *
      * @param surface May be a Surface or SurfaceTexture.
      */
     public void createWindowSurface(Object surface) {
@@ -193,5 +194,20 @@ public class EglSurfaceBase {
             if (bos != null) bos.close();
         }
         Log.d(TAG, "Saved " + width + "x" + height + " frame as '" + filename + "'");
+    }
+
+    public Bitmap saveFrame() {
+        int width = getWidth();
+        int height = getHeight();
+        ByteBuffer buf = ByteBuffer.allocateDirect(width * height * 4);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        GLES30.glReadPixels(0, 0, width, height,
+                GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, buf);
+        GlUtil.checkGlError("glReadPixels");
+        buf.rewind();
+
+        Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bmp.copyPixelsFromBuffer(buf);
+        return bmp;
     }
 }

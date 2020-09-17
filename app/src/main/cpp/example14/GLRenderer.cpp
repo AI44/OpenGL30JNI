@@ -94,9 +94,8 @@ Java_com_ideacarry_example14_GLRenderer_drawFrame(JNIEnv *env, jclass clazz, jin
     glClear(GL_COLOR_BUFFER_BIT);
 
     screenShader->use();
-    jfloat* mat = env->GetFloatArrayElements(matrix, 0);
-    //layout (location = 2)
-    glUniformMatrix4fv(2, 1, GL_FALSE, mat);
+    jfloat *mat = env->GetFloatArrayElements(matrix, 0);
+    screenShader->setMat4("uTextureMatrix", mat);
     env->ReleaseFloatArrayElements(matrix, mat, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(quadVAO);

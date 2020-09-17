@@ -24,8 +24,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.ideacarry.example14.PermissionUtils;
-import com.ideacarry.example14.PreviewUtils;
+import com.ideacarry.utils.PermissionUtils;
+import com.ideacarry.utils.PreviewUtils;
 
 public class DemoActivity extends AppCompatActivity {
     private Preview mPreview;

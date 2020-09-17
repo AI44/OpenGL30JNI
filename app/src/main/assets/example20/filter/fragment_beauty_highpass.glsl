@@ -4,9 +4,9 @@ precision mediump float;
 in vec2 TexCoords;
 out vec4 FragColor;
 
-layout (location = 0) uniform sampler2D inputTexture; // 输入原图
-layout (location = 1) uniform sampler2D blurTexture;  // 高斯模糊图片
-const float intensity = 24.0;   // 强光程度
+uniform sampler2D inputTexture;// 输入原图
+uniform sampler2D blurTexture;// 高斯模糊图片
+const float intensity = 24.0;// 强光程度
 
 void main() {
     lowp vec4 sourceColor = texture(inputTexture, TexCoords);
