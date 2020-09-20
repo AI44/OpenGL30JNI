@@ -61,6 +61,7 @@ public class DemoActivity extends AppCompatActivity {
 
     public void onFilterBtn(View view) {
         if (view == mBinding.filter1Btn) {
+            mFilterIndex = 1;
 
             /*new Filter1(getApplicationContext(), mOrgBmp, result -> {
                 mFilterBmp = result;
@@ -98,6 +99,7 @@ public class DemoActivity extends AppCompatActivity {
             });
 
         } else if (view == mBinding.filter2Btn) {
+            mFilterIndex = 2;
 
             /*new Filter2(getApplicationContext(), mOrgBmp, result -> {
                 mFilterBmp = result;
