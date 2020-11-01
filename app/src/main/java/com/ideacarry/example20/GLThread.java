@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 
 import com.android.grafika.gles.EglCore;
 import com.android.grafika.gles.WindowSurface;
-import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.example20.filter.BeautyFilter;
 import com.ideacarry.example20.filter.CameraFilter;
 import com.ideacarry.example20.filter.ScreenFilter;
+import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.GLUtils;
 import com.ideacarry.utils.TextureManager;
 
@@ -171,7 +171,6 @@ public class GLThread extends HandlerThread implements Executor, TextureView.Sur
                 onSizeChange();
             });
         }
-
     }
 
     @Override

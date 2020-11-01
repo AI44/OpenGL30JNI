@@ -110,11 +110,11 @@ glBindBuffer(GL_ARRAY_BUFFER, NULL);
 //代码二，使用shader
 glBindBuffer(GL_ARRAY_BUFFER, m_nPositionVBO);
 glEnableVertexAttribArray(VAT_POSITION);
-glVertexAttribPointer(VAT_POSITION, 2, GL_INT, GL_FALSE, 0, NULL);
+glVertexAttribPointer(VAT_POSITION, 2, GL_INT, GL_FALSE, 0, 0);
 
 glBindBuffer(GL_ARRAY_BUFFER, m_nTexcoordVBO);
 glEnableVertexAttribArray(VAT_TEXCOORD);
-glVertexAttribPointer(VAT_TEXCOORD, 2, GL_INT, GL_FALSE, 0, NULL);
+glVertexAttribPointer(VAT_TEXCOORD, 2, GL_INT, GL_FALSE, 0, 0);
 
 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_nIndexVBO);
 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL);
@@ -165,11 +165,11 @@ glBindVertexArray(m_nQuadVAO);
 //开始保存状态
 glBindBuffer(GL_ARRAY_BUFFER, m_nQuadPositionVBO);  
 glEnableVertexAttribArray(VAT_POSITION);  
-glVertexAttribPointer(VAT_POSITION, 2, GL_INT, GL_FALSE, 0, NULL);
+glVertexAttribPointer(VAT_POSITION, 2, GL_INT, GL_FALSE, 0, 0);
 
 glBindBuffer(GL_ARRAY_BUFFER, m_nQuadTexcoordVBO);  
 glEnableVertexAttribArray(VAT_TEXCOORD);  
-glVertexAttribPointer(VAT_TEXCOORD, 2, GL_INT, GL_FALSE, 0, NULL);  
+glVertexAttribPointer(VAT_TEXCOORD, 2, GL_INT, GL_FALSE, 0, 0);  
 
 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_nQuadIndexVBO);   
 //保存结束

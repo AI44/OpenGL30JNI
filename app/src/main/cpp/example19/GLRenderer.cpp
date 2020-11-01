@@ -389,7 +389,7 @@ Java_com_ideacarry_example19_GLRenderer_drawFrame(JNIEnv *env, jobject thiz, job
     glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(FACE_POINTS), FACE_POINTS, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void *) 0);
 
     GLuint texture = loadAssetsTexture2D(env, bmp, GL_CLAMP_TO_EDGE);
     //绑定图像texture

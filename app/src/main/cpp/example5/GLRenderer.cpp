@@ -45,7 +45,7 @@ Java_com_ideacarry_example5_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz,
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         //位置属性
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
         glEnableVertexAttribArray(0);
 
         //颜色属性
