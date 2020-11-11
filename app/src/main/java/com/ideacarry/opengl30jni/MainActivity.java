@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("19.人脸点渲染图像", com.ideacarry.example19.DemoActivity.class));
         LIST_DATA.add(new ItemData("20.镜头效果测试", com.ideacarry.example20.DemoActivity.class));
         LIST_DATA.add(new ItemData("21.图片效果测试", com.ideacarry.example21.DemoActivity.class));
+        LIST_DATA.add(new ItemData("22.光效测试", com.ideacarry.example22.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 

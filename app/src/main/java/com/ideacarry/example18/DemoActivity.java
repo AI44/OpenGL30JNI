@@ -29,9 +29,9 @@ public class DemoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*GLSurfaceView mGLSurfaceView = new GLSurfaceView(this);
-        mGLSurfaceView.setEGLContextClientVersion(3);
-        mGLSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
+        /*GLSurfaceView glSurfaceView = new GLSurfaceView(this);
+        glSurfaceView.setEGLContextClientVersion(3);
+        glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
             @Override
             public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             }
@@ -45,8 +45,8 @@ public class DemoActivity extends AppCompatActivity {
                 draw();
             }
         });
-        mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        setContentView(mGLSurfaceView);*/
+        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setContentView(glSurfaceView);*/
 
         imageView = new ImageView(this);
         setContentView(imageView);

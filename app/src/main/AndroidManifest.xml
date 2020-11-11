@@ -93,6 +93,10 @@
         <activity
             android:name="com.ideacarry.example21.DemoActivity"
             android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example22.DemoActivity"
+            android:screenOrientation="behind"
+            android:theme="@style/CameraActivityTheme" />
     </application>
 
 </manifest>

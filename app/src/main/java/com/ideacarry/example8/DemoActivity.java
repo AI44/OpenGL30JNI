@@ -24,13 +24,13 @@ public class DemoActivity extends AppCompatActivity {
         {
             FrameLayout.LayoutParams fl;
 
-            GLSurfaceView mGLSurfaceView = new GLSurfaceView(this);
-            mGLSurfaceView.setEGLContextClientVersion(3);
-            mGLSurfaceView.setRenderer(new GLRenderer(this, 0xff0000ff));
-            //mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-            mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+            GLSurfaceView glSurfaceView = new GLSurfaceView(this);
+            glSurfaceView.setEGLContextClientVersion(3);
+            glSurfaceView.setRenderer(new GLRenderer(this, 0xff0000ff));
+            //glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
             fl = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            fr.addView(mGLSurfaceView, fl);
+            fr.addView(glSurfaceView, fl);
 
             Button btn = new Button(this);
             btn.setAlpha(0.3f);
