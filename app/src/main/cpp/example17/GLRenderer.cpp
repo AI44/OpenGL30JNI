@@ -19,25 +19,42 @@ namespace example17 {
 
     static esUtils::Shader *orgShader = nullptr;
     static esUtils::Shader *lut3DShader = nullptr;
+    static esUtils::Shader *lut2DArrShader = nullptr;
     static esUtils::Shader *lutShader = nullptr;
     static GLuint quadVAO, quadVBO;
 
     static GLuint picTexture;
     static GLuint lutTexture3D;
+    static GLuint lutTexture2DArr;
     static GLuint lutTexture;
 
     static void release() {
         glDeleteVertexArrays(1, &quadVAO);
         glDeleteBuffers(1, &quadVBO);
 
+        if (orgShader) {
+            orgShader->release();
+            delete orgShader;
+            orgShader = nullptr;
+        }
         if (lut3DShader) {
             lut3DShader->release();
             delete lut3DShader;
             lut3DShader = nullptr;
         }
+        if (lut2DArrShader) {
+            lut2DArrShader->release();
+            delete lut2DArrShader;
+            lut2DArrShader = nullptr;
+        }
+        if (lutShader) {
+            lutShader->release();
+            delete lutShader;
+            lutShader = nullptr;
+        }
     }
 
-    static bool lutUse3D = true;
+    static int lutType = 0;
     static bool compare = false;
 }
 
@@ -45,7 +62,8 @@ using namespace example17;
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz, jobject context, jint bg_color) {
+Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz, jobject context,
+                                                       jint bg_color) {
     if (orgShader) {
         orgShader->release();
         delete orgShader;
@@ -55,6 +73,11 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
         lut3DShader->release();
         delete lut3DShader;
         lut3DShader = nullptr;
+    }
+    if (lut2DArrShader) {
+        lut2DArrShader->release();
+        delete lut2DArrShader;
+        lut2DArrShader = nullptr;
     }
     if (lutShader) {
         lutShader->release();
@@ -70,6 +93,11 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
     //使用texture3D实现LUT3D
     lut3DShader = new esUtils::Shader(env, context, "example17/lut_vertex.glsl",
                                       "example17/lut3d_fragment.glsl");
+
+    //使用texture2D array实现LUT3D
+    lut2DArrShader = new esUtils::Shader(env, context, "example17/lut_vertex.glsl",
+                                         "example17/lut2d4x4_fragment.glsl");
+
     //使用算法实现4x4的LUT3D
     lutShader = new esUtils::Shader(env, context, "example17/lut_vertex.glsl",
                                     "example17/lut4x4_fragment.glsl");
@@ -91,34 +119,10 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
     Image8888 img;
     img.SetImage(env, bmp);
     if (bmp) {
-#define LUT_WIDTH 16
-#define LUT_HEIGHT 16
-#define LUT_W_NUM 4
-#define LUT_H_NUM 4
-        int depth = LUT_W_NUM * LUT_H_NUM;
-        glGenTextures(1, &lutTexture3D);
-        glBindTexture(GL_TEXTURE_3D, lutTexture3D);
-        checkGlError("glBindTexture 3D");
-        glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, LUT_WIDTH, LUT_HEIGHT, depth, 0,
-                     GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        checkGlError("glTexImage3D");
-        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, img.m_width);
-        for (int i = 0; i < depth; i++) {
-            glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, i, LUT_WIDTH,
-                            LUT_HEIGHT, 1, GL_RGBA, GL_UNSIGNED_BYTE,
-                            img.m_pDatas +
-                            i / LUT_W_NUM * LUT_WIDTH * LUT_HEIGHT * LUT_W_NUM * 4 +
-                            (i % LUT_W_NUM) * LUT_WIDTH * 4);
-            checkGlError("glTexSubImage3D");
-        }
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+        lutTexture3D = createTexture3D(GL_TEXTURE_3D, img.m_pDatas, img.m_width, img.m_height,
+                                       4, 4);
+        lutTexture2DArr = createTexture3D(GL_TEXTURE_2D_ARRAY, img.m_pDatas, img.m_width,
+                                          img.m_height, 4, 4);
 
         img.ClearAll();
         env->DeleteLocalRef(bmp);
@@ -128,10 +132,17 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
 
     orgShader->use();
     orgShader->setInt("uTexturePic", 0);//pic
+
     lut3DShader->use();
     lut3DShader->setInt("uTexturePic", 0);//pic
     lut3DShader->setInt("uTextureLUT", 1);//lut
     lut3DShader->setFloat("intensity", 1.0f);//intensity
+
+    lut2DArrShader->use();
+    lut2DArrShader->setInt("uTexturePic", 0);//pic
+    lut2DArrShader->setInt("uTextureLUT", 1);//lut
+    lut2DArrShader->setFloat("intensity", 1.0f);//intensity
+
     lutShader->use();
     lutShader->setInt("uTexturePic", 0);//pic
     lutShader->setInt("uTextureLUT", 1);//lut
@@ -140,7 +151,8 @@ Java_com_ideacarry_example17_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_ideacarry_example17_GLRenderer_surfaceChanged(JNIEnv *env, jobject thiz, jint width, jint height) {
+Java_com_ideacarry_example17_GLRenderer_surfaceChanged(JNIEnv *env, jobject thiz, jint width,
+                                                       jint height) {
     ALOGE("w=%d,h=%d", width, height);
     glViewport(0, (height - width) / 2, width, width);
 }
@@ -160,27 +172,45 @@ Java_com_ideacarry_example17_GLRenderer_drawFrame(JNIEnv *env, jobject thiz) {
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
     } else {
-        if (lutUse3D) {
-            if (lut3DShader) {
-                lut3DShader->use();
-                glBindVertexArray(quadVAO);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, picTexture);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_3D, lutTexture3D);
-                checkGlError("glBindTexture 3D");
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            }
-        } else {
-            if (lutShader) {
-                lutShader->use();
-                glBindVertexArray(quadVAO);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, picTexture);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, lutTexture);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            }
+        switch (lutType) {
+            case 0: //3d
+                if (lut3DShader) {
+                    lut3DShader->use();
+                    glBindVertexArray(quadVAO);
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, picTexture);
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_3D, lutTexture3D);
+                    checkGlError("glBindTexture 3D");
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                }
+                break;
+
+            case 1://2d arr
+                if (lut2DArrShader) {
+                    lut2DArrShader->use();
+                    glBindVertexArray(quadVAO);
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, picTexture);
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D_ARRAY, lutTexture2DArr);
+                    checkGlError("glBindTexture 3D");
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                }
+                break;
+
+            case 2://old
+                if (lutShader) {
+                    lutShader->use();
+                    glBindVertexArray(quadVAO);
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, picTexture);
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, lutTexture);
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                }
+                break;
+
         }
     }
     glBindVertexArray(0);
@@ -195,6 +225,6 @@ Java_com_ideacarry_example17_GLRenderer_compare(JNIEnv *env, jclass clazz, jbool
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_ideacarry_example17_GLRenderer_lut3D(JNIEnv *env, jclass clazz, jboolean use3_d) {
-    lutUse3D = use3_d;
+Java_com_ideacarry_example17_GLRenderer_lut3D(JNIEnv *env, jclass clazz, jint type) {
+    lutType = type;
 }

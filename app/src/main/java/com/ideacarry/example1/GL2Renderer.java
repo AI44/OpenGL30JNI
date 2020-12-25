@@ -80,7 +80,7 @@ public class GL2Renderer implements GLSurfaceView.Renderer {
      *
      * @param shaderType shader的类型  GLES20.GL_VERTEX_SHADER   GLES20.GL_FRAGMENT_SHADER
      * @param sourceCode shader的脚本
-     * @return shader索引
+     * @return shader句柄
      */
     private static int loadShader(int shaderType, String sourceCode) {
         // 创建一个新shader
@@ -115,7 +115,7 @@ public class GL2Renderer implements GLSurfaceView.Renderer {
             return 0;
         }
 
-        // 加载片元着色器
+        // 加载片段着色器
         int pixelShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentSource);
         if (pixelShader == 0) {
             return 0;
@@ -123,11 +123,11 @@ public class GL2Renderer implements GLSurfaceView.Renderer {
 
         // 创建程序
         int program = GLES20.glCreateProgram();
-        // 若程序创建成功则向程序中加入顶点着色器与片元着色器
+        // 若程序创建成功则向程序中加入顶点着色器与片段着色器
         if (program != 0) {
             // 向程序中加入顶点着色器
             GLES20.glAttachShader(program, vertexShader);
-            // 向程序中加入片元着色器
+            // 向程序中加入片段着色器
             GLES20.glAttachShader(program, pixelShader);
             // 链接程序
             GLES20.glLinkProgram(program);

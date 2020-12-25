@@ -1,5 +1,6 @@
-// 优化后的高斯模糊
 #version 300 es
+
+// 优化后的高斯模糊
 
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
@@ -13,7 +14,7 @@ const int SHIFT_SIZE = 2;
 out vec4 blurShiftCoordinates[SHIFT_SIZE];
 
 void main() {
-    gl_Position = vec4(aPos, 0.0f, 1.0f);
+    gl_Position = vec4(aPos, 0.0, 1.0);
     textureCoordinate = aTexCoords;
     // 偏移步距
     vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);

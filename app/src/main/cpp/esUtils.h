@@ -36,6 +36,8 @@ GLuint loadAssetsTexture2D(JNIEnv *env, jobject bmp, GLint textureWrapping);
 
 GLuint createRGBATexture2D(int w, int h);
 
+GLuint createTexture3D(int target, const uint8_t *pixels, int width, int height, int column, int row);
+
 namespace esUtils {
 
     enum CompileType {

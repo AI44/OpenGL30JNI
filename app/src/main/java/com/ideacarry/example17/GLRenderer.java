@@ -39,5 +39,5 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     public static native void compare(boolean press);
 
-    public static native void lut3D(boolean use3D);
+    public static native void lut3D(int type);
 }

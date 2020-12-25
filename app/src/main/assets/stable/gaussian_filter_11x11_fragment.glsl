@@ -2,7 +2,7 @@
 precision mediump float;
 
 #define SHIFT_SIZE 5
-const float KERNEL[SHIFT_SIZE + 1] = float[](0.109379f, 0.107213f, 0.100969f, 0.0913609f, 0.0794254f, 0.0663417f);
+const float KERNEL[SHIFT_SIZE + 1] = float[](0.109379, 0.107213, 0.100969, 0.0913609, 0.0794254, 0.0663417);
 
 uniform lowp sampler2D inputTexture;
 

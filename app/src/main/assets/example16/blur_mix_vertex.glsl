@@ -7,5 +7,5 @@ out vec2 TexCoords;
 
 void main() {
     TexCoords = aTexCoords.xy;
-    gl_Position = vec4(aPos.xy, 0.0f, 1.0f);
+    gl_Position = vec4(aPos.xy, 0.0, 1.0);
 }

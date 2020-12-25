@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLES11Ext;
 import android.opengl.GLES30;
 import android.util.Size;
 
@@ -173,7 +174,54 @@ public class GLUtils {
         return textureId;
     }
 
-    public static int loadTexture3D(Bitmap img, int column, int row) {
+    /**
+     * @param target {@link GLES30#GL_TEXTURE_3D}或{@link GLES30#GL_TEXTURE_2D_ARRAY}
+     */
+    public static int createTexture3D(int target, Bitmap[] imgArr) {
+        int[] id = {-1};
+        GLES30.glGenTextures(1, id, 0);
+
+        int depth = imgArr.length;//blue
+        Bitmap temp = imgArr[0];
+        int itemW = temp.getWidth();
+        int itemH = temp.getHeight();
+
+        GLES30.glBindTexture(target, id[0]);
+        GLES30.glPixelStorei(GLES30.GL_UNPACK_ALIGNMENT, 4);//4字节对齐
+        /*GLES30.glTexImage3D(target, 0, GLES30.GL_RGBA8, itemW, itemH, depth, 0,
+                GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);*/
+        GLES30.glTexStorage3D(target, 1, GLES30.GL_RGBA8, itemW, itemH, depth);//不可变纹理，优化性能
+        GLES30.glTexParameterf(target, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_R, GLES30.GL_CLAMP_TO_EDGE);
+        GLES30.glPixelStorei(GLES30.GL_UNPACK_ROW_LENGTH, 0);
+        ByteBuffer buf = ByteBuffer.allocate(itemW * itemH * 4);
+        for (int i = 0; i < depth; i++) {
+            Bitmap sub = imgArr[i];
+            buf.rewind();
+            sub.copyPixelsToBuffer(buf);
+            buf.position(0);
+            GLES30.glTexSubImage3D(target, 0, 0, 0, i, itemW, itemH, 1, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, buf);
+        }
+
+        return id[0];
+    }
+
+    public static int createTexture2DArr(Bitmap[] imgArr) {
+        return createTexture3D(GLES30.GL_TEXTURE_2D_ARRAY, imgArr);
+    }
+
+    public static int createTexture3D(Bitmap[] imgArr) {
+        return createTexture3D(GLES30.GL_TEXTURE_3D, imgArr);
+    }
+
+    /**
+     * @param target {@link GLES30#GL_TEXTURE_3D}或{@link GLES30#GL_TEXTURE_2D_ARRAY}
+     */
+    public static int createTexture3D(int target, Bitmap img, int column, int row) {
         int[] id = {-1};
         GLES30.glGenTextures(1, id, 0);
 
@@ -183,28 +231,38 @@ public class GLUtils {
         int itemW = img.getWidth() / wNum;
         int itemH = img.getHeight() / hNum;
 
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_3D, id[0]);
+        GLES30.glBindTexture(target, id[0]);
         GLES30.glPixelStorei(GLES30.GL_UNPACK_ALIGNMENT, 4);//4字节对齐
-        GLES30.glTexImage3D(GLES30.GL_TEXTURE_3D, 0, GLES30.GL_RGBA8, itemW, itemH, depth, 0,
-                GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_3D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_3D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_3D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_3D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_3D, GLES30.GL_TEXTURE_WRAP_R, GLES30.GL_CLAMP_TO_EDGE);
+        /*GLES30.glTexImage3D(target, 0, GLES30.GL_RGBA8, itemW, itemH, depth, 0,
+                GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);*/
+        GLES30.glTexStorage3D(target, 1, GLES30.GL_RGBA8, itemW, itemH, depth);//不可变纹理，优化性能
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
+        GLES30.glTexParameteri(target, GLES30.GL_TEXTURE_WRAP_R, GLES30.GL_CLAMP_TO_EDGE);
         //GLES30.glPixelStorei(GLES30.GL_UNPACK_ROW_LENGTH, img.getWidth());
         GLES30.glPixelStorei(GLES30.GL_UNPACK_ROW_LENGTH, 0);
+        ByteBuffer buf = ByteBuffer.allocate(itemW * itemH * 4);
         for (int i = 0; i < depth; i++) {
             Bitmap sub = Bitmap.createBitmap(img, (i % wNum) * itemW, i / wNum * itemH, itemW, itemH);
-            ByteBuffer buf = ByteBuffer.allocate(itemW * itemH * 4);
+            buf.rewind();
             sub.copyPixelsToBuffer(buf);
             buf.position(0);
             sub.recycle();
-            GLES30.glTexSubImage3D(GLES30.GL_TEXTURE_3D, 0, 0, 0, i, itemW, itemH, 1, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, buf);
+            GLES30.glTexSubImage3D(target, 0, 0, 0, i, itemW, itemH, 1, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, buf);
         }
         //GLES30.glPixelStorei(GLES30.GL_UNPACK_ROW_LENGTH, 0);
 
         return id[0];
+    }
+
+    public static int createTexture2DArr(Bitmap img, int column, int row) {
+        return createTexture3D(GLES30.GL_TEXTURE_2D_ARRAY, img, column, row);
+    }
+
+    public static int createTexture3D(Bitmap img, int column, int row) {
+        return createTexture3D(GLES30.GL_TEXTURE_3D, img, column, row);
     }
 
     /**
@@ -212,7 +270,7 @@ public class GLUtils {
      */
     public static int createTexture3DFromAssets(Context context, String name, int column, int row) {
         Bitmap bitmap = getImageFromAssetsFile(context, name);
-        int textureId = loadTexture3D(bitmap, column, row);
+        int textureId = createTexture3D(bitmap, column, row);
         bitmap.recycle();
         return textureId;
     }

@@ -47,7 +47,7 @@ Java_com_ideacarry_example1_GLRenderer_surfaceCreated(JNIEnv *env, jobject thiz,
     program = createProgram(vertexShaderCode, fragmentShaderCode);
     if (program) {
         //准备三角形的坐标数据
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vertices);//stride : 指定连续顶点属性之间的偏移量。如果为0，那么顶点属性会被理解为：它们是紧密排列在一起的。初始值为0。
         //启用三角形顶点的句柄
         glEnableVertexAttribArray(0);
         //禁止顶点数组的句柄

@@ -23,6 +23,7 @@ import android.util.Log;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 /**
  * Some OpenGL utility functions.
@@ -41,6 +42,7 @@ public class GlUtil {
     }
 
     private static final int SIZEOF_FLOAT = 4;
+    private static final int SIZEOF_SHORT = 2;
 
 
     private GlUtil() {
@@ -162,6 +164,19 @@ public class GlUtil {
         GlUtil.checkGlError("loadImageTexture");
 
         return textureHandle;
+    }
+
+    /**
+     * Allocates a direct short buffer, and populates it with the short array data.
+     */
+    public static ShortBuffer createShortBuffer(short[] indices) {
+        // Allocate a direct ByteBuffer, using 2 bytes per short, and copy indices into it.
+        ByteBuffer bb = ByteBuffer.allocateDirect(indices.length * SIZEOF_SHORT);
+        bb.order(ByteOrder.nativeOrder());
+        ShortBuffer sb = bb.asShortBuffer();
+        sb.put(indices);
+        sb.position(0);
+        return sb;
     }
 
     /**

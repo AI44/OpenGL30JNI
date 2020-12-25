@@ -1,6 +1,7 @@
-// 优化后的高斯模糊
 #version 300 es
 precision mediump float;
+
+// 优化后的高斯模糊
 
 uniform sampler2D inputTexture;
 

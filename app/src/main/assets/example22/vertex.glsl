@@ -16,8 +16,8 @@ out vec2 LightTexCoords;
 
 void main() {
     ImageTexCoords = aTexCoords;
-    gl_Position = vec4(aPos.x, -aPos.y, 0.0f, 1.0f);
+    gl_Position = vec4(aPos.x, -aPos.y, 0.0, 1.0);
 
-    vec4 lightPosition = matrix * vec4(screenWidth * aTexCoords.x, screenHeight * aTexCoords.y, 0.0f, 1.0f);//使用屏幕真实坐标反算光效位置(这里是真实坐标)
+    vec4 lightPosition = matrix * vec4(screenWidth * aTexCoords.x, screenHeight * aTexCoords.y, 0.0, 1.0);//使用屏幕真实坐标反算光效位置(这里是真实坐标)
     LightTexCoords = vec2(lightPosition.x / lightWidth, lightPosition.y / lightHeight);//真实坐标转换为逻辑坐标
 }

@@ -22,5 +22,5 @@ void main() {
     sum += texture(inputImageTexture, textureShift_4.xy).rgb;
     sum += texture(inputImageTexture, textureShift_4.zw).rgb;
 
-    FragColor = vec4(sum * 0.1111f, 1.0f);
+    FragColor = vec4(sum * 0.1111, 1.0);
 }

@@ -1,5 +1,6 @@
 package com.ideacarry.example20;
 
+import android.graphics.ImageFormat;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -29,41 +30,28 @@ public class AnalyzerThread extends HandlerThread implements Executor, ImageAnal
 
     @Override
     public void analyze(@NonNull ImageProxy image) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        int y = w * h;
-        int uv = (((w + 1) >> 1) * ((h + 1) >> 1)) << 1;
-        byte[] buf = getTempBuffer(y + uv);
-        ImageProxy.PlaneProxy[] proxies = image.getPlanes();
-        if (proxies.length > 1) {
-            int offset = 0;
-            for (int i = 0; i < 3; i++) {
-                switch (i) {
-                    case 0: {
-                        ByteBuffer byteBuffer = proxies[i].getBuffer();
-                        int size = byteBuffer.remaining();
-                        if (size > y) {
-                            size = y;
-                        }
-                        byteBuffer.get(buf, offset, size);
-                        offset += size;
-                        break;
-                    }
-                    case 2: {
-                        ByteBuffer byteBuffer = proxies[i].getBuffer();
-                        int size = byteBuffer.remaining();
-                        if (size > uv) {
-                            size = uv;
-                        }
-                        byteBuffer.get(buf, offset, size);
-                        offset += size;
-                        break;
+        if (image.getFormat() == ImageFormat.YUV_420_888) {
+            int w = image.getWidth();
+            int h = image.getHeight();
+            byte[] buf = getTempBuffer(w * h + ((((w + 1) >> 1) * ((h + 1) >> 1)) << 1));
+            ImageProxy.PlaneProxy[] proxies = image.getPlanes();
+            if (proxies.length > 1) {
+                int offset = 0;
+                for (int i = 0; i < 3; i++) {
+                    switch (i) {
+                        case 0:
+                        case 2:
+                            ByteBuffer byteBuffer = proxies[i].getBuffer();
+                            int size = byteBuffer.remaining();
+                            byteBuffer.get(buf, offset, size);
+                            offset += size;
+                            break;
                     }
                 }
+                //这里做人脸检测-----------------------------------------------------------------start
+                //buf
+                //这里做人脸检测-------------------------------------------------------------------end
             }
-            //这里做人脸检测-----------------------------------------------------------------start
-            //buf
-            //这里做人脸检测-------------------------------------------------------------------end
         }
         image.close();
     }

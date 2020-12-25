@@ -236,7 +236,40 @@ GLuint createRGBATexture2D(int w, int h) {
     return id;
 }
 
-esUtils::Shader::Shader(JNIEnv *env, jobject context, const char *vertexAssetsPath, const char *fragmentAssetsPath) {
+GLuint
+createTexture3D(int target, const uint8_t *pixels, int width, int height, int column, int row) {
+    GLuint id;
+    int itemW = width / column;
+    int itemH = height / row;
+    int depth = column * row;
+    glGenTextures(1, &id);
+    glBindTexture(target, id);
+    checkGlError("glBindTexture 3D");
+    /*glTexImage3D(target, 0, GL_RGBA8, itemW, itemH, depth, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, nullptr);*/
+    glTexStorage3D(target, 1, GL_RGBA8, itemW, itemH, depth);//不可变纹理，优化性能
+    checkGlError("glTexImage3D");
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);//4字节对齐
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, width);
+    for (int i = 0; i < depth; i++) {
+        glTexSubImage3D(target, 0, 0, 0, i, itemW,
+                        itemH, 1, GL_RGBA, GL_UNSIGNED_BYTE,
+                        pixels + i / column * itemW * itemH * column * 4 +
+                        (i % column) * itemW * 4);
+        checkGlError("glTexSubImage3D");
+    }
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    return id;
+}
+
+esUtils::Shader::Shader(JNIEnv *env, jobject context, const char *vertexAssetsPath,
+                        const char *fragmentAssetsPath) {
     char *vertexShaderCode = (char *) readAssetFile(env, context, vertexAssetsPath, true, nullptr);
     char *fragmentShaderCode = (char *) readAssetFile(env, context, fragmentAssetsPath, true,
                                                       nullptr);

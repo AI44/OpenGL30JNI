@@ -16,16 +16,16 @@ void main() {
     float v = vu.r;
     float u = vu.g;
 
-    y = 1.164f*(y - 0.0625f);
-    u = u - 0.5f;
-    v = v - 0.5f;
+    y = 1.164 *(y - 0.0625);
+    u = u - 0.5;
+    v = v - 0.5;
 
     //1.596023559570*v
-    float r = y + 1.596f*v;
+    float r = y + 1.596*v;
     //0.3917694091796875*u - 0.8129730224609375*v
-    float g = y - 0.392f*u - 0.813f*v;
+    float g = y - 0.392*u - 0.813*v;
     //2.017227172851563*u
-    float b = y + 2.017f*u;
+    float b = y + 2.017*u;
 
-    FragColor = vec4(r, g, b, 1.0f);
+    FragColor = vec4(r, g, b, 1.0);
 }

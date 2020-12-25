@@ -65,14 +65,14 @@ namespace example9 {
                                          "uniform mat4 view;"
                                          "uniform mat4 projection;"
                                          "void main() {"
-                                         "gl_Position = projection * view * model * vec4(aPos, 1.0f);"
+                                         "gl_Position = projection * view * model * vec4(aPos, 1.0);"
                                          "}";
 
     static const char *lightFragmentShaderCode = "#version 300 es\n"
                                            "precision mediump float;"
                                            "out vec4 FragColor;"
                                            "void main() {"
-                                           "FragColor = vec4(1.0f);"
+                                           "FragColor = vec4(1.0);"
                                            "}";
 
     static GLuint program = 0;

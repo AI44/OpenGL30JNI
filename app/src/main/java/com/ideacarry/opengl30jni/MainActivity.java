@@ -1,9 +1,11 @@
 package com.ideacarry.opengl30jni;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("20.镜头效果测试", com.ideacarry.example20.DemoActivity.class));
         LIST_DATA.add(new ItemData("21.图片效果测试", com.ideacarry.example21.DemoActivity.class));
         LIST_DATA.add(new ItemData("22.光效测试", com.ideacarry.example22.DemoActivity.class));
+        LIST_DATA.add(new ItemData("23.模板测试", com.ideacarry.example23.DemoActivity.class));
+        LIST_DATA.add(new ItemData("24.texture3D线性插值测试对比", com.ideacarry.example24.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 
@@ -57,5 +61,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, data.getActivityClass());
             startActivity(intent);
         });
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.INTERNET},
+                999);
     }
 }
