@@ -72,3 +72,19 @@ v¯⋅k¯=||v¯||⋅||k¯||⋅cosθ
 v¯⋅k¯=1⋅1⋅cosθ=cosθ
 
 现在点积只定义了两个向量的夹角。你也许记得90度的余弦值是0，0度的余弦值是1。使用点乘可以很容易测试两个向量是否正交(Orthogonal)或平行（正交意味着两个向量互为直角）。
+
+#### 叉乘(右手定则)
+
+![vectors_crossproduct](vectors_crossproduct.png)
+
+#### 矩阵乘法
+
+1.只有当左侧矩阵的列数与右侧矩阵的行数相等，两个矩阵才能相乘。  
+2.矩阵乘法不满足交换律(Commutative)，也就是说A⋅B≠B⋅A。  
+
+![matrix_multiplication](matrix_multiplication.png)
+
+朝向
+----
+
+![orientation](orientation.png)
