@@ -270,3 +270,37 @@ HSV模型
 ![hsv](hsv.jpg)
 
 [了解更多](https://blog.csdn.net/weixin_42078760/article/details/80652062)
+
+
+MediaCodec
+----------
+
+#### MediaCodec使用流程
+
+![mediacodec](mediacodec.png)
+
+如果客户端打算以异步模式使用组件，则应该在调用configure(MediaFormat, Surface, MediaCrypto, int)之前提供一个有效的callback。
+
+当异步回调被启用时，客户端不应该调用getInputBuffers()、getOutputBuffers()、dequeueInputBuffer(long)和dequeueOutputBuffer(android.media.MediaCodec.BufferInfo, long)。
+
+异步模式setCallback(MediaCodec.Callback, Handler)可以指定回调线程。
+
+#### 输出到surface
+
+不渲染缓冲区：调用 releaseOutputBuffer(bufferId, false)。
+
+使用默认的时间戳渲染缓冲区：调用 releaseOutputBuffer(bufferId, true)。
+
+使用特定的时间戳渲染缓冲区：调用 releaseOutputBuffer(bufferId, timestamp)。
+
+#### 同步调用流程
+
+dequeueInputBuffer(同步模式才需要调用) -> queueInputBuffer填充数据 -> dequeueOutputBuffer(同步模式才需要调用) -> releaseOutputBuffer显示画面
+
+#### 同步状态
+
+![synchronous states](synchronous states.png)
+
+#### 异步状态
+
+![asynchronous states](asynchronous states.png)
