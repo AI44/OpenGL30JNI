@@ -3,7 +3,7 @@ precision mediump float;
 
 uniform sampler2D uTexturePic;
 uniform sampler2D uTextureLUT;
-uniform float intensity;// 0 - 1.0
+uniform float intensity; // 0 - 1.0
 
 in vec2 TexCoords;
 
@@ -11,11 +11,11 @@ out vec4 FragColor;
 
 void main() {
     vec4 textureColor = texture(uTexturePic, TexCoords);
-    float blueColor = textureColor.b * 15.0;//index
+    float blueColor = textureColor.b * 15.0; //index
 
     vec2 quad1;
-    quad1.y = floor(blueColor / 4.0);//row index
-    quad1.x = floor(blueColor) - (quad1.y * 4.0);//column index
+    quad1.y = floor(blueColor / 4.0); //row index
+    quad1.x = floor(blueColor) - (quad1.y * 4.0); //column index
 
     vec2 quad2;
     quad2.y = floor(ceil(blueColor) / 4.0);

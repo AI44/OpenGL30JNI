@@ -3,7 +3,7 @@ precision mediump float;
 
 uniform sampler2D uTexturePic;
 uniform mediump sampler3D uTextureLUT;
-uniform float intensity;// 0 - 1.0
+uniform float intensity; // 0 - 1.0
 
 in vec2 TexCoords;
 

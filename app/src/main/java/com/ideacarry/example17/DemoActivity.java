@@ -45,12 +45,16 @@ public class DemoActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.texture3dBtn) {
+        if (id == R.id.texture3d4x4Btn) {
             GLRenderer.lut3D(0);
-        } else if (id == R.id.texture2dArrBtn) {
+        } else if (id == R.id.texture2dArr4x4Btn) {
             GLRenderer.lut3D(1);
-        } else if (id == R.id.texture2dBtn) {
+        } else if (id == R.id.texture2d4x4Btn) {
             GLRenderer.lut3D(2);
+        } else if (id == R.id.texture3d8x8Btn) {
+            GLRenderer.lut3D(3);
+        } else if (id == R.id.texture2d8x8Btn) {
+            GLRenderer.lut3D(4);
         }
     }
 }
