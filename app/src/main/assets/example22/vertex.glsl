@@ -6,7 +6,7 @@ layout (location = 1) in vec2 aTexCoords;//纹理坐标
 uniform float screenWidth;//屏幕的长宽
 uniform float screenHeight;
 
-uniform float lightWidth;//光效的长宽
+uniform float lightWidth;//光效图片的长宽
 uniform float lightHeight;
 
 uniform highp mat4 matrix;//光效位置逆矩阵
