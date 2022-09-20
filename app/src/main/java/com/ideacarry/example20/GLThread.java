@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 
 import com.android.grafika.gles.EglCore;
 import com.android.grafika.gles.WindowSurface;
-import com.ideacarry.example20.filter.BeautyFilter;
+import com.ideacarry.example20.colordissolve.ColorDissolveFilter;
 import com.ideacarry.example20.filter.CameraFilter;
 import com.ideacarry.example20.filter.ScreenFilter;
+import com.ideacarry.example20.line.LineFilter;
+import com.ideacarry.example20.split.SplitFilter;
 import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.GLUtils;
 import com.ideacarry.utils.TextureManager;
@@ -56,7 +58,20 @@ public class GLThread extends HandlerThread implements Executor, TextureView.Sur
         //mFilterList添加滤镜-------------------------------------------------------------------start
         mCameraFilter = new CameraFilter();
         mScreenFilter = new ScreenFilter();
-        mFilterList.add(new BeautyFilter());
+        //mFilterList.add(new BeautyFilter());
+        //mFilterList.add(new NoiseFilter());
+        //mFilterList.add(new MosaicFilter());
+        //mFilterList.add(new PeepholeFilter());
+        //mFilterList.add(new SplitFilter());
+        //mFilterList.add(new SplitFilter());
+        mFilterList.add(new SplitFilter());
+        //mFilterList.add(new SplitMirrorFilter());
+        //mFilterList.add(new SplitBlackFilter());
+        //mFilterList.add(new SoftGlowFilter());
+        //mFilterList.add(new EdgeLightFilter());
+        //mFilterList.add(new ColorShiftFilter());
+        //mFilterList.add(new LineFilter());
+        //mFilterList.add(new ColorDissolveFilter());
         mTextureManager = new TextureManager();
         //mFilterList添加滤镜---------------------------------------------------------------------end
     }

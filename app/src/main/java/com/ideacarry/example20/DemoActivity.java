@@ -56,6 +56,8 @@ public class DemoActivity extends AppCompatActivity {
         _1_1,
         _3_4,
         _9_16,
+        _4_3,
+        _16_9,
     }
 
     private RatioType[] mRatioArr = RatioType.values();
@@ -133,6 +135,26 @@ public class DemoActivity extends AppCompatActivity {
                     case _9_16: {
                         int w = (fr.getWidth() >> 1) << 1;
                         int h = ((Math.round(w / 9.0f * 16)) >> 1) << 1;
+                        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                                w,
+                                h);
+                        layoutParams.gravity = Gravity.CENTER;
+                        mView.setLayoutParams(layoutParams);
+                        break;
+                    }
+                    case _4_3: {
+                        int w = (fr.getWidth() >> 1) << 1;
+                        int h = ((Math.round(w / 4.0f * 3)) >> 1) << 1;
+                        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                                w,
+                                h);
+                        layoutParams.gravity = Gravity.CENTER;
+                        mView.setLayoutParams(layoutParams);
+                        break;
+                    }
+                    case _16_9: {
+                        int w = (fr.getWidth() >> 1) << 1;
+                        int h = ((Math.round(w / 16.0f * 9)) >> 1) << 1;
                         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                                 w,
                                 h);
