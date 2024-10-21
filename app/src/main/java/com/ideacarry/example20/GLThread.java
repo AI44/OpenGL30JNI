@@ -3,7 +3,6 @@ package com.ideacarry.example20;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
-import android.opengl.GLES30;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.TextureView;
@@ -12,10 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.android.grafika.gles.EglCore;
 import com.android.grafika.gles.WindowSurface;
-import com.ideacarry.example20.colordissolve.ColorDissolveFilter;
 import com.ideacarry.example20.filter.CameraFilter;
 import com.ideacarry.example20.filter.ScreenFilter;
-import com.ideacarry.example20.line.LineFilter;
 import com.ideacarry.example20.split.SplitFilter;
 import com.ideacarry.stable.filter.BaseFilter;
 import com.ideacarry.utils.GLUtils;
@@ -199,14 +196,9 @@ public class GLThread extends HandlerThread implements Executor, TextureView.Sur
                 }
                 mCameraFilter.onDestroy(mContext);
                 mScreenFilter.onDestroy(mContext);
-                if (mVao > -1) {
-                    GLES30.glDeleteVertexArrays(1, new int[]{mVao}, 0);
-                    mVao = -1;
-                }
-                if (mVbo > -1) {
-                    GLES30.glDeleteBuffers(1, new int[]{mVbo}, 0);
-                    mVbo = -1;
-                }
+                GLUtils.deleteQuadVertexArrays(mVao, mVbo);
+                mVao = -1;
+                mVbo = -1;
                 //onDestroy----------------------------------------------------------------------end
             });
         }

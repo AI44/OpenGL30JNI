@@ -121,7 +121,7 @@ nal_unit_type ：表示NALU的类型。
 
 #### [SEI 例子](https://zhuanlan.zhihu.com/p/33720871)
 
-![SEI bitstream](SEI bitstream.jpg)
+![SEI bitstream](SEI_bitstream.jpg)
 
 ##### NAL header
 起始码（暗红底色）"0x00000001"分割出来的比特流即是NAL unit，起始码紧跟的第一个字节(墨绿底色)是NAL header。上图“NAL header”一共出现了四个数值：  
@@ -185,7 +185,7 @@ EBSP相较于RBSP，多了防止竞争的一个字节：0x03。
 
 所以H264就提出了“防止竞争”这样一种机制，当编码器编码完一个NAL时，应该检测NALU内部，是否出现如下左侧的四个序列。当检测到它们存在时，编码器就在最后一个字节前，插入一个新的字节：0x03。
 
-![EBSP 0x03](EBSP 0x03.jpg)
+![EBSP 0x03](EBSP_0x03.jpg)
 
 图中0x000000和0x000001前面介绍了，0x000002是作为保留使用，而0x000003，则是为了防止NALU内部，原本就有序列为0x000003这样的数据。
 
@@ -281,7 +281,7 @@ MediaCodec
 
 如果客户端打算以异步模式使用组件，则应该在调用configure(MediaFormat, Surface, MediaCrypto, int)之前提供一个有效的callback。
 
-当异步回调被启用时，客户端不应该调用getInputBuffers()、getOutputBuffers()、dequeueInputBuffer(long)和dequeueOutputBuffer(android.media.MediaCodec.BufferInfo, long)。
+当异步回调被启用时，客户端不应该调用dequeueInputBuffer(long)和dequeueOutputBuffer(android.media.MediaCodec.BufferInfo, long)。
 
 异步模式setCallback(MediaCodec.Callback, Handler)可以指定回调线程。
 
@@ -299,8 +299,23 @@ dequeueInputBuffer(同步模式才需要调用) -> queueInputBuffer填充数据 
 
 #### 同步状态
 
-![synchronous states](synchronous states.png)
+![synchronous states](synchronous_states.png)
+
 
 #### 异步状态
 
-![asynchronous states](asynchronous states.png)
+![asynchronous states](asynchronous_states.png)
+
+#### GOP
+
+![gop](gop.png)
+
+两个关键帧中的帧个数即为GOP值。实际流编码的GOP值一般在（100-150）帧之间。
+
+I帧：自身可以通过视频解压算法解压成一张单独的完整视频画面，所以I帧去掉的是视频帧在空间维度上的冗余信息。
+
+P帧：需要参考前面的I帧或者P帧来解码成一张完整的视频画面。
+
+B帧：需要参考前一个I帧或者P帧及其后面的一个P帧来生成一张完整的视频画面，所以P帧与B帧去掉的是视频帧在时间维度上的冗余信息。
+
+[参考网站1](https://blog.csdn.net/bestwu0666/article/details/123063895)

@@ -28,7 +28,6 @@ public class Filter1 extends BaseFilter {
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 4);
 
         program.release();
-        GLES30.glDeleteBuffers(1, params, 1);
-        GLES30.glDeleteVertexArrays(1, params, 0);
+        GLUtils.deleteQuadVertexArrays(params[0], params[1]);
     }
 }

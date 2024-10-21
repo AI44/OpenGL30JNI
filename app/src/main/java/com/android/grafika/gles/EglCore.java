@@ -372,4 +372,8 @@ public final class EglCore {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
     }
+
+    public EGLContext getEglContext() {
+        return mEGLContext;
+    }
 }

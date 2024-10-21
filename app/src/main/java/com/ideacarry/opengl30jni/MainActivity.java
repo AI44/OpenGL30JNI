@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("22.光效测试", com.ideacarry.example22.DemoActivity.class));
         LIST_DATA.add(new ItemData("23.模板测试", com.ideacarry.example23.DemoActivity.class));
         LIST_DATA.add(new ItemData("24.texture3D线性插值测试对比", com.ideacarry.example24.DemoActivity.class));
-        LIST_DATA.add(new ItemData("25.MediaCodec", com.ideacarry.example25.DemoActivity.class));
+        LIST_DATA.add(new ItemData("25.MediaCodec java test", com.ideacarry.example25.DemoActivity.class));
+        LIST_DATA.add(new ItemData("26.MediaCodec解码data", com.ideacarry.example26.DemoActivity.class));
+        LIST_DATA.add(new ItemData("27.MediaCodec异步解码音视频(YUV)", com.ideacarry.example27.DemoActivity.class));
+        LIST_DATA.add(new ItemData("28.MediaCodec异步解码视频(surface)", com.ideacarry.example28.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 

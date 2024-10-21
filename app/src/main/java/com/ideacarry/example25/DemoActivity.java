@@ -16,7 +16,12 @@ import com.ideacarry.utils.FPSTool;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Created by Raining on 2021/1/12
+ * #I# MediaCodec java test
+ */
 public class DemoActivity extends AppCompatActivity {
+
     private static final String TAG = "example25";
     private static final String MP4_PATH = "example25/test.mp4";
 
@@ -121,7 +126,7 @@ public class DemoActivity extends AppCompatActivity {
                                         outputDone = true;
                                     }
 
-                                    codec.releaseOutputBuffer(outputBufferId, true);
+                                    codec.releaseOutputBuffer(outputBufferId, false);
                                 }
                                 break;
                         }

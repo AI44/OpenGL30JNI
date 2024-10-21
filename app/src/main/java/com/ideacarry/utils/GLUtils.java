@@ -15,6 +15,8 @@ import java.nio.FloatBuffer;
 
 /**
  * Created by Raining on 2020/9/2.
+ * <p>
+ * GL工具类
  */
 public class GLUtils {
     /**
@@ -106,6 +108,8 @@ public class GLUtils {
     };
 
     /**
+     * @param vertexIndex        顶点坐标的layout index
+     * @param textureVertexIndex 纹理坐标的layout index
      * @return [0]vao, [1]vbo
      */
     public static int[] createQuadVertexArrays(int vertexIndex, int textureVertexIndex) {
@@ -124,6 +128,16 @@ public class GLUtils {
         GLES30.glBindVertexArray(0);
 
         return new int[]{vao[0], vbo[0]};
+    }
+
+    public static void deleteQuadVertexArrays(int vao, int vbo) {
+        int[] arr = new int[]{vao, vbo};
+        if (vao > -1) {
+            GLES30.glDeleteVertexArrays(1, arr, 0);
+        }
+        if (vbo > -1) {
+            GLES30.glDeleteBuffers(1, arr, 1);
+        }
     }
 
     public static Bitmap getImageFromAssetsFile(Context context, String fileName) {

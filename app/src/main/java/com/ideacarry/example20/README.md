@@ -29,13 +29,13 @@ A = min(kA, As * sA + Ad * dA)
 举个例子：
 
 1. `glBlendFunc(GL_ONE, GL_ZERO)`这种参数因子组合混合比例是`(1.0, 0.0)`。  
-   即 源颜色（最后绘制的绿色矩形）覆盖目标色（缓冲区中颜色）；目标色（缓冲区中颜色）不起作用。
-   ![src_one_dst_zero](src_one_dst_zero.png)
+   即 源颜色（最后绘制的绿色矩形）覆盖目标色（缓冲区中颜色）；目标色（缓冲区中颜色）不起作用。  
+   ![src_one_dst_zero](src_one_dst_zero.png)  
    三个矩形（Z轴深度由深到浅）分别为，石头墙、绿色矩形、蓝色云彩。
 
 2. `glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)`这种参数因子组合混合比例`(As/kA, 1.0-As/kA)`。  
    即 源颜色（最后绘制的绿色矩形）与 目标色（缓冲区中颜色）在混合时，取源颜色的`src*(As/kA)`与目标颜色`dest*(1.0-As/kA)`
-   相加计算最终的颜色值。
+   相加计算最终的颜色值。  
    ![src_alpha_dst_one_minus_src_alpha](src_alpha_dst_one_minus_src_alpha.png)
 
 3. 假设，源RGBA(1, 1, 0, 0.6)，目标RGBA(0.6, 0.6, 0.5, 1)，使用`glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)`

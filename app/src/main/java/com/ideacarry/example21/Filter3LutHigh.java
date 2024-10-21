@@ -42,7 +42,6 @@ public class Filter3LutHigh extends BaseFilter {
 
         GLES30.glDeleteTextures(1, new int[]{lut}, 0);
         program.release();
-        GLES30.glDeleteBuffers(1, params, 1);
-        GLES30.glDeleteVertexArrays(1, params, 0);
+        GLUtils.deleteQuadVertexArrays(params[0], params[1]);
     }
 }

@@ -38,7 +38,6 @@ public class Filter4BlurOld extends BaseFilter {
 
         filter.onDestroy(mContext);
         manager.clear();
-        GLES30.glDeleteBuffers(1, params, 1);
-        GLES30.glDeleteVertexArrays(1, params, 0);
+        GLUtils.deleteQuadVertexArrays(params[0], params[1]);
     }
 }
