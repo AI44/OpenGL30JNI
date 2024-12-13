@@ -33,21 +33,16 @@ public class DemoActivity extends AppCompatActivity {
     }
 
     public void onFilterBtn(View view) {
-        switch (view.getId()) {
-            case R.id.filter1Btn:
-                mRenderer.setMode(0);
-                mBinding.surfaceView.requestRender();
-                break;
-
-            case R.id.filter2Btn:
-                mRenderer.setMode(1);
-                mBinding.surfaceView.requestRender();
-                break;
-
-            case R.id.filter3Btn:
-                mRenderer.setMode(2);
-                mBinding.surfaceView.requestRender();
-                break;
+        int viewId = view.getId();
+        if (viewId == R.id.filter1Btn) {
+            mRenderer.setMode(0);
+            mBinding.surfaceView.requestRender();
+        } else if (viewId == R.id.filter2Btn) {
+            mRenderer.setMode(1);
+            mBinding.surfaceView.requestRender();
+        } else if (viewId == R.id.filter3Btn) {
+            mRenderer.setMode(2);
+            mBinding.surfaceView.requestRender();
         }
     }
 }
