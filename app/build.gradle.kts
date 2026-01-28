@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.ideacarry.opengl30jni"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ideacarry.opengl30jni"
         minSdk = 27
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 2
         versionName = "1.1"
 
@@ -32,16 +32,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
+            version = "3.31.6"
         }
     }
     buildFeatures {
@@ -51,8 +51,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    buildToolsVersion = "35.0.0"
-    ndkVersion = "25.1.8937393"
+    ndkVersion = "27.3.13750724"
 }
 
 dependencies {
