@@ -20,6 +20,21 @@ set_target_properties(freetype2lib PROPERTIES
         )
 
 ##########################################################
+set(assimp_path ${CMAKE_SOURCE_DIR}/../../../../assimp)
+set(assimp_include ${assimp_path}/include)
+set(assimp_a_path ${assimp_path}/alibs/${ANDROID_ABI})
+include_directories(${assimp_include})
+
+##########################################################
+set(assimp_a ${assimp_a_path}/libassimp.a)
+add_library(assimplib STATIC IMPORTED)
+set_target_properties(assimplib PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+        IMPORTED_LINK_INTERFACE_LIBRARIES "z;m;atomic"
+        IMPORTED_LOCATION ${assimp_a}
+)
+
+##########################################################
 include_directories(./)
 
 include_directories(./image)
@@ -125,4 +140,8 @@ target_link_libraries(
         m
         #EGL
         freetype2lib
+        optimized
+        atomic
+        z
+        assimplib
         ${log-lib})
