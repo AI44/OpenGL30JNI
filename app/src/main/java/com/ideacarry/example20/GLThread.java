@@ -203,7 +203,7 @@ public class GLThread extends HandlerThread implements Executor, TextureView.Sur
             });
         }
         mIsDestroy = true;
-        return false;
+        return false; // 如果返回 false，你需要自己手动调用 SurfaceTexture.release() 释放资源
     }
 
     @Override
