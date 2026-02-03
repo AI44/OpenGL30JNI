@@ -117,6 +117,9 @@
         <activity
             android:name="com.ideacarry.example28.DemoActivity"
             android:screenOrientation="behind" />
+        <activity
+            android:name="com.ideacarry.example29.DemoActivity"
+            android:screenOrientation="behind" />
     </application>
 
 </manifest>

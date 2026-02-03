@@ -16,9 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // gdx
+        maven("https://central.sonatype.com/repository/maven-snapshots/")
+        maven("https://jitpack.io")
     }
 }
 
 rootProject.name = "OpenGL30JNI"
 include(":app")
- 
