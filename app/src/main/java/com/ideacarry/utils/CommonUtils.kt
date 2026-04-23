@@ -1,402 +1,301 @@
-package com.ideacarry.utils;
+package com.ideacarry.utils
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.PointF;
-import android.os.Environment;
-import android.view.View;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
+import android.app.Activity
+import android.content.Context
+import android.graphics.PointF
+import android.os.Build
+import android.os.Environment
+import android.view.View
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.util.Locale
 
 /**
  * Created by Raining on 2020/6/22.
  */
-public class CommonUtils {
+object CommonUtils {
     /*
      ****************************************************************
      * 文件读取/文件夹创建
      ****************************************************************
      */
-    public static byte[] ReadData(InputStream is) {
-        ByteArrayOutputStream os = new ByteArrayOutputStream(2048);
-
-        byte[] buf = new byte[1024];
-        byte[] out = null;
-        int readSize = 0;
-        try {
-            while ((readSize = is.read(buf)) > -1) {
-                os.write(buf, 0, readSize);
+    fun readData(inputStream: InputStream): ByteArray? {
+        return try {
+            ByteArrayOutputStream(2048).use { os ->
+                val buf = ByteArray(1024)
+                var readSize: Int
+                while (inputStream.read(buf).also { readSize = it } > -1) {
+                    os.write(buf, 0, readSize)
+                }
+                os.toByteArray()
             }
-            out = os.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
-
-        return out;
     }
 
     /**
      * 读数据
      */
-    public static byte[] ReadData(int size, InputStream is) {
-        if (size < 1) {
-            //读取系统未知大小文件
-            ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
-            final int LEN = 1024;
-            final byte[] BUF = new byte[LEN];
-            byte[] ret = null;
-            int readSize = 0;
-            try {
-                while ((readSize = is.read(BUF, 0, LEN)) > -1) {
-                    out.write(BUF, 0, readSize);
-                }
-                ret = out.toByteArray();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    fun readData(size: Int, inputStream: InputStream): ByteArray? {
+        return if (size < 1) readDataUnknownSize(inputStream)
+        else readDataKnownSize(size, inputStream)
+    }
 
-            return ret;
-        } else {
-            //已知文件大小方式，效率高
-            byte[] out = new byte[size];
-            int currentSize = 0;
-            int readSize = 0;
-            try {
-                while ((readSize = is.read(out, currentSize, size - currentSize)) > -1) {
-                    currentSize += readSize;
-                    if (currentSize >= size) {
-                        break;
-                    }
+    private fun readDataUnknownSize(inputStream: InputStream): ByteArray? {
+        return try {
+            ByteArrayOutputStream(4096).use { out ->
+                val buf = ByteArray(1024)
+                var readSize: Int
+                while (inputStream.read(buf, 0, buf.size).also { readSize = it } > -1) {
+                    out.write(buf, 0, readSize)
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+                out.toByteArray()
             }
-
-            return out;
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
+    }
+
+    private fun readDataKnownSize(size: Int, inputStream: InputStream): ByteArray {
+        val out = ByteArray(size)
+        var currentSize = 0
+        try {
+            while (currentSize < size) {
+                val readSize = inputStream.read(out, currentSize, size - currentSize)
+                if (readSize < 0) break
+                currentSize += readSize
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return out
     }
 
     /**
      * 加载本地文件
      */
-    public static byte[] ReadFile(String path) {
-        byte[] out = null;
-
-        File file = new File(path);
-        if (file.exists()) {
-            int totalSize = (int) file.length();
-            if (totalSize >= 0) {
-                FileInputStream is = null;
-                try {
-                    is = new FileInputStream(file);
-                    out = ReadData(totalSize, is);
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                } finally {
-                    if (is != null) {
-                        try {
-                            is.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+    fun readFile(path: String): ByteArray? {
+        val file = File(path)
+        if (!file.exists()) return null
+        val totalSize = file.length().toInt()
+        if (totalSize < 0) return null
+        return try {
+            FileInputStream(file).use { readData(totalSize, it) }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
         }
-
-        return out;
     }
 
-    public static void MakeFolder(String path) {
+    fun makeFolder(path: String?) {
+        path ?: return
         try {
-            if (path != null) {
-                File file = new File(path);
-                if (!(file.exists() && file.isDirectory())) {
-                    file.mkdirs();
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
+            val file = File(path)
+            if (!file.exists() || !file.isDirectory) file.mkdirs()
+        } catch (e: Throwable) {
+            e.printStackTrace()
         }
     }
 
-    public static boolean MakeParentFolder(String path) {
-        boolean out = false;
-
-        if (path != null) {
-            File file = new File(path).getParentFile();
-            if (file != null) {
-                if (file.exists()) {
-                    out = true;
-                } else {
-                    if (file.mkdirs()) {
-                        out = true;
-                    }
-                }
-            }
-        }
-
-        return out;
+    fun makeParentFolder(path: String?): Boolean {
+        val parent = File(path ?: return false).parentFile ?: return false
+        return parent.exists() || parent.mkdirs()
     }
 
-    public static boolean SaveFile(String path, byte[] data) {
-        boolean out = false;
-
-        FileOutputStream fos = null;
-        try {
-            if (path != null && data != null) {
-                if (MakeParentFolder(path)) {
-                    fos = new FileOutputStream(path);
-                    fos.write(data);
-                    fos.close();
-                    fos = null;
-                    out = true;
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (Throwable e) {
-                }
-                fos = null;
-            }
+    fun saveFile(path: String?, data: ByteArray?): Boolean {
+        if (path == null || data == null || !makeParentFolder(path)) return false
+        return try {
+            FileOutputStream(path).use { it.write(data) }
+            true
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            false
         }
-
-        return out;
     }
 
-    public static boolean SaveFile(String path, InputStream is) {
-        boolean out = false;
-
-        FileOutputStream fos = null;
-        try {
-            if (path != null && is != null) {
-                if (MakeParentFolder(path)) {
-                    fos = new FileOutputStream(path);
-                    final int BUF_SIZE = 8192;
-                    int len;
-                    byte[] buffer = new byte[BUF_SIZE];
-                    while ((len = is.read(buffer, 0, BUF_SIZE)) != -1) {
-                        fos.write(buffer, 0, len);
-                    }
-                    fos.close();
-                    fos = null;
-                    out = true;
+    fun saveFile(path: String?, inputStream: InputStream?): Boolean {
+        if (path == null || inputStream == null || !makeParentFolder(path)) return false
+        return try {
+            FileOutputStream(path).use { fos ->
+                val buffer = ByteArray(8192)
+                var len: Int
+                while (inputStream.read(buffer).also { len = it } != -1) {
+                    fos.write(buffer, 0, len)
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (Throwable e) {
-                }
-            }
+            true
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            false
         }
-
-        return out;
     }
 
-    public interface ProgressListener {
-        void onProgress(int progress);
+    fun saveFile(path: String?, inputStream: InputStream?, size: Long, lst: ProgressListener?): Boolean {
+        if (lst == null) return saveFile(path, inputStream)
+        if (path == null || inputStream == null || !makeParentFolder(path)) return false
+        return try {
+            FileOutputStream(path).use { fos ->
+                val buffer = ByteArray(8192)
+                var len: Int
+                var total = 0
+                var lastReport = System.currentTimeMillis()
+                lst.onProgress(1)
+                while (inputStream.read(buffer).also { len = it } != -1) {
+                    total += len
+                    fos.write(buffer, 0, len)
+                    lastReport = maybeReportProgress(lst, size, total, lastReport)
+                }
+                lst.onProgress(100)
+            }
+            true
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            false
+        }
     }
 
-    public static boolean SaveFile(String path, InputStream is, long size, ProgressListener lst) {
-        if (lst == null) {
-            return SaveFile(path, is);
-        }
-
-        boolean out = false;
-        FileOutputStream fos = null;
-        try {
-            if (path != null && is != null) {
-                if (MakeParentFolder(path)) {
-                    fos = new FileOutputStream(path);
-                    final int BUF_SIZE = 8192;
-                    int len;
-                    int total = 0;
-                    long cur = System.currentTimeMillis();
-                    long temp;
-                    byte[] buffer = new byte[BUF_SIZE];
-                    lst.onProgress(1);
-                    while ((len = is.read(buffer, 0, BUF_SIZE)) != -1) {
-                        total += len;
-                        fos.write(buffer, 0, len);
-                        if (size > 0) {
-                            temp = System.currentTimeMillis();
-                            if (temp - cur > 1000) {
-                                cur = temp;
-                                int p = (int) ((float) total / size * 100);
-                                if (p > 100) {
-                                    p = 99;
-                                }
-                                lst.onProgress(p);
-                            }
-                        }
-                    }
-                    lst.onProgress(100);
-                    fos.close();
-                    fos = null;
-                    out = true;
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (Throwable e) {
-                }
-            }
-        }
-
-        return out;
+    private fun maybeReportProgress(lst: ProgressListener, size: Long, total: Int, lastReport: Long): Long {
+        if (size <= 0) return lastReport
+        val now = System.currentTimeMillis()
+        if (now - lastReport <= 1000) return lastReport
+        lst.onProgress(minOf((total.toFloat() / size * 100).toInt(), 99))
+        return now
     }
 
-    public static String getPhotoSavePath() {
-        String out = null;
-        String manufacturer = android.os.Build.MANUFACTURER;
-        if (manufacturer != null) {
-            manufacturer = manufacturer.toLowerCase(Locale.getDefault());
-            //魅族的默认相册路径不同，原来的路径图库不显示
-            if (manufacturer.contains("meizu")) {
-                out = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Camera";
+    val photoSavePath: String
+        get() {
+            val manufacturer = Build.MANUFACTURER?.lowercase(Locale.getDefault())
+            if (manufacturer?.contains("meizu") == true) {
+                return Environment.getExternalStorageDirectory().absolutePath + File.separator + "Camera"
             }
+            val chinesePath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "相机"
+            if (File(chinesePath).exists()) return chinesePath
+            val dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+            val base = dcim?.absolutePath
+                ?: (Environment.getExternalStorageDirectory().absolutePath + File.separator + "DCIM")
+            return base + File.separator + "Camera"
         }
-        if (out == null) {
-            out = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "相机";
-            if (!new File(out).exists()) {
-                out = null;
-            }
+
+    /**
+     * 获取真实版本号
+     */
+    fun getAppVer(context: Context): String? {
+        return try {
+            context.applicationContext.packageManager
+                ?.getPackageInfo(context.applicationContext.packageName, 0)
+                ?.versionName
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
         }
-        if (out == null) {
-            File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-            if (dcim != null) {
-                out = dcim.getAbsolutePath() + File.separator + "Camera";
-            } else {
-                out = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "DCIM" + File.separator + "Camera";
-            }
-        }
-        return out;
     }
 
     /**
      * 获取真实版本号
      */
-    public static String GetAppVer(Context context) {
-        String out = null;
-
-        try {
-            PackageManager pm = context.getApplicationContext().getPackageManager();
-            if (pm != null) {
-                PackageInfo pi = pm.getPackageInfo(context.getApplicationContext().getPackageName(), 0);
-                if (pi != null) {
-                    out = pi.versionName;
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
+    fun getAppVerCode(context: Context): Int {
+        return try {
+            context.applicationContext.packageManager
+                ?.getPackageInfo(context.applicationContext.packageName, 0)
+                ?.versionCode ?: 0
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            0
         }
+    }
 
-        return out;
+    fun pointFArrayToFloatArray(dst: FloatArray, dstOffset: Int, arr: Array<PointF>?) {
+        arr ?: return
+        if (dst.size - dstOffset < arr.size shr 1) return
+        var i = dstOffset
+        for (point in arr) {
+            dst[i] = point.x
+            dst[i + 1] = point.y
+            i += 2
+        }
+    }
+
+    fun pointFArrayToFloatArray(arr: Array<PointF>?): FloatArray? {
+        arr ?: return null
+        val result = FloatArray(arr.size shl 1)
+        pointFArrayToFloatArray(result, 0, arr)
+        return result
     }
 
     /**
-     * 获取真实版本号
-     */
-    public static int GetAppVerCode(Context context) {
-        int out = 0;
-
-        try {
-            PackageManager pm = context.getApplicationContext().getPackageManager();
-            if (pm != null) {
-                PackageInfo pi = pm.getPackageInfo(context.getApplicationContext().getPackageName(), 0);
-                if (pi != null) {
-                    out = pi.versionCode;
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return out;
-    }
-
-    public static void PointFArrayToFloatArray(float[] dst, int dstOffset, PointF[] arr) {
-        if (arr != null && dst.length - dstOffset >= (arr.length >> 1)) {
-            int i = dstOffset;
-            for (PointF point : arr) {
-                dst[i] = point.x;
-                dst[i + 1] = point.y;
-                i += 2;
-            }
-        }
-    }
-
-    public static float[] PointFArrayToFloatArray(PointF[] arr) {
-        if (arr != null) {
-            float[] result = new float[arr.length << 1];
-            PointFArrayToFloatArray(result, 0, arr);
-            return result;
-        }
-        return null;
-    }
-
-    /**
-     * 放在Activity的onStart里实现全屏<br/>
+     * 放在Activity的onStart里实现全屏<br></br>
      * <pre>
-     * {@code
-     * protected void onStart() {
-     *     CommonUtils.activityFullScreen(this);
-     *     super.onStart();
-     * }
-     * }
-     * </pre>
+     * `protected void onStart() {     CommonUtils.activityFullScreen(this);     super.onStart(); } `
+    </pre> *
      */
-    public static void activityFullScreen(final Activity activity) {
-        if (activity != null) {
-            final View decorView = activity.getWindow().getDecorView();
-            int flag = decorView.getSystemUiVisibility();
-            flag |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE;//固定开始的布局，不随navigation bar显示/隐藏影响
-            flag |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;//设置后布局会被status bar和navigation bar覆盖
-            flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;//设置后布局会被status bar覆盖
-            flag |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;//隐藏navigation bar
-            flag |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;//bar 唤出后几秒就消失，不触发 Listener
-            decorView.setSystemUiVisibility(flag);
+    @JvmStatic
+    fun activityFullScreen(activity: Activity?) {
+        activity ?: return
+        val decorView = activity.window.decorView
+        decorView.systemUiVisibility = decorView.systemUiVisibility or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or         // 固定开始的布局，不随navigation bar显示/隐藏影响
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or // 布局会被status bar和navigation bar覆盖
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or      // 布局会被status bar覆盖
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or        // 隐藏navigation bar
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY          // bar 唤出后几秒就消失，不触发 Listener
+    }
+
+    @JvmStatic
+    fun readAssetFile(context: Context, path: String): ByteArray? {
+        return try {
+            context.assets.open(path).use { readData(it) }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
         }
     }
 
-    public static byte[] readAssetFile(Context context, String path) {
+    @JvmStatic
+    fun copyAssetsDirToInternalStorage(context: Context, assetsDirName: String, sdCardDir: String) {
+        var dstDir = sdCardDir
         try {
-            return ReadData(context.getAssets().open(path));
-        } catch (Throwable e) {
-            e.printStackTrace();
+            val list = context.assets.list(assetsDirName) ?: return
+            if (list.isEmpty()) {
+                copyAssetFileToStorage(context, assetsDirName, dstDir)
+                return
+            }
+            val subDirName = if (assetsDirName.contains("/"))
+                assetsDirName.substring(assetsDirName.lastIndexOf('/') + 1)
+            else assetsDirName
+            dstDir = "$dstDir${File.separator}$subDirName"
+            File(dstDir).mkdirs()
+            for (s in list) {
+                copyAssetsDirToInternalStorage(context, "$assetsDirName${File.separator}$s", dstDir)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return null;
+    }
+
+    private fun copyAssetFileToStorage(context: Context, assetPath: String, destDir: String) {
+        val file = File("$destDir${File.separator}${assetPath.substring(assetPath.lastIndexOf('/'))}")
+        if (file.exists()) return
+        file.createNewFile()
+        context.assets.open(assetPath).use { inputStream ->
+            FileOutputStream(file).use { fos ->
+                val buf = ByteArray(1024)
+                var bt: Int
+                while (inputStream.read(buf).also { bt = it } != -1) {
+                    fos.write(buf, 0, bt)
+                }
+                fos.flush()
+            }
+        }
+    }
+
+    interface ProgressListener {
+        fun onProgress(progress: Int)
     }
 }

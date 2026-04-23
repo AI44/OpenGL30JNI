@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.android.grafika.gles;
+package com.android.grafika.gles
 
 /**
  * Off-screen EGL surface (pbuffer).
- * <p>
+ *
+ *
  * It's good practice to explicitly release() the surface, preferably from a "finally" block.
  */
-public class OffscreenSurface extends EglSurfaceBase {
-    /**
-     * Creates an off-screen surface with the specified width and height.
-     */
-    public OffscreenSurface(EglCore eglCore, int width, int height) {
-        super(eglCore);
-        createOffscreenSurface(width, height);
-    }
-
+class OffscreenSurface(eglCore: EglCore, width: Int, height: Int) : EglSurfaceBase(eglCore) {
     /**
      * Releases any resources associated with the surface.
      */
-    public void release() {
-        releaseEglSurface();
+    override fun release() {
+        releaseEglSurface()
+    }
+
+    /**
+     * Creates an off-screen surface with the specified width and height.
+     */
+    init {
+        createOffscreenSurface(width, height)
     }
 }

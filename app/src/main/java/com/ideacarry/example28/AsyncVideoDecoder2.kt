@@ -16,7 +16,6 @@ import com.android.grafika.gles.OffscreenSurface
 import com.ideacarry.example14.GLRenderer
 import com.ideacarry.example27.decoder.DecoderHelper
 import com.ideacarry.example27.decoder.FrameType
-import com.ideacarry.example27.decoder.OnUpdateFrameListener
 
 /**
  * Created by Raining on 2023/08/16
@@ -71,7 +70,7 @@ class AsyncVideoDecoder2(
     /**
      * 用于创建共享gl context实现texture共享
      */
-    fun getEglContext() = eglCore.eglContext
+    fun getEglContext() = eglCore.eglContext()
 
     init {
         decoderHandler.post {

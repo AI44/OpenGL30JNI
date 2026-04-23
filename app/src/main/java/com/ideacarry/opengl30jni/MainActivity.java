@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         LIST_DATA.add(new ItemData("27.MediaCodec异步解码音视频(YUV)", com.ideacarry.example27.DemoActivity.class));
         LIST_DATA.add(new ItemData("28.MediaCodec异步解码视频(surface)", com.ideacarry.example28.DemoActivity.class));
         LIST_DATA.add(new ItemData("29.gdx", com.ideacarry.example29.DemoActivity.class));
+        LIST_DATA.add(new ItemData("30.assimp", com.ideacarry.example30.DemoActivity.class));
         Collections.reverse(LIST_DATA);
     }
 

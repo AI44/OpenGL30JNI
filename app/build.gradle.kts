@@ -48,12 +48,13 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
     }
-    ndkVersion = "27.3.13750724"
+    ndkVersion = "28.2.13676358"
     sourceSets {
         getByName("main") {
             jniLibs.srcDirs("libs")
@@ -176,10 +177,8 @@ dependencies {
 tasks.register("copyAndroidNatives") {
     doFirst {
         val abiDirs = listOf(
-            "armeabi-v7a",
             "arm64-v8a",
             "x86_64",
-            "x86"
         )
 
         // 创建目录
@@ -190,10 +189,8 @@ tasks.register("copyAndroidNatives") {
         configurations[nativesConfig].copy().files.forEach { jar ->
 
             val outputDir = when {
-                jar.name.endsWith("natives-armeabi-v7a.jar") -> file("libs/armeabi-v7a")
                 jar.name.endsWith("natives-arm64-v8a.jar") -> file("libs/arm64-v8a")
                 jar.name.endsWith("natives-x86_64.jar") -> file("libs/x86_64")
-                jar.name.endsWith("natives-x86.jar") -> file("libs/x86")
                 else -> null
             }
 

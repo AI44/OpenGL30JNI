@@ -46,8 +46,8 @@ class VideoGLRenderer(
     private val matrix = FloatArray(16)
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
-        val vsCode = String(CommonUtils.readAssetFile(context, "example27/vertex.glsl"))
-        val fsCode = String(CommonUtils.readAssetFile(context, "example27/fragment_bt709yuv.glsl"))
+        val vsCode = String(CommonUtils.readAssetFile(context, "example27/vertex.glsl") ?: ByteArray(0))
+        val fsCode = String(CommonUtils.readAssetFile(context, "example27/fragment_bt709yuv.glsl") ?: ByteArray(0))
         shaderProgram = GLShaderProgram(vsCode, fsCode)
         shaderProgram?.let {
             it.use()

@@ -97,6 +97,9 @@ aux_source_directory(./example17 example17)
 include_directories(./example19)
 aux_source_directory(./example19 example19)
 
+include_directories(./example30)
+aux_source_directory(./example30 example30)
+
 add_library(
         native-lib
 
@@ -124,6 +127,7 @@ add_library(
         ${example16_filter}
         ${example17}
         ${example19}
+        ${example30}
         native-lib.cpp)
 
 find_library(
